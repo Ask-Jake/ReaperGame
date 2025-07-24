@@ -1,38 +1,82 @@
+/* General body styling */
 body {
-  background: #111;
-  color: #eee;
-  font-family: "Courier New", monospace;
-  padding: 20px;
+  background-color: #0d0d0d;
+  color: #e0e0e0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   text-align: center;
+  margin: 0;
+  padding: 20px;
 }
-#scene-container {
-  width: 600px;
-  height: 300px;
-  margin: 20px auto;
-  background: #222;
-  position: relative;
+
+/* Game title */
+h1 {
+  font-size: 2.5em;
+  color: #ff6666;
+  margin-bottom: 20px;
+  text-shadow: 0 0 10px #ff0000;
 }
-#scene-img {
-  max-width: 100%;
-  max-height: 100%;
+
+/* Input and start button */
+#input-container {
+  margin: 20px 0;
 }
-#stats div {
-  margin: 5px 0;
+
+#input {
+  padding: 10px;
+  font-size: 1em;
+  width: 250px;
+  border: none;
+  border-radius: 5px;
 }
+
 button {
   padding: 10px 20px;
-  background-color: crimson;
+  font-size: 1em;
+  background-color: #b30000;
   color: white;
   border: none;
+  border-radius: 5px;
   margin: 5px;
   cursor: pointer;
+  transition: background-color 0.3s;
 }
+
 button:hover {
-  background-color: darkred;
+  background-color: #ff1a1a;
 }
-#input-container {
-  margin: 20px;
+
+/* Scene image */
+#scene-img {
+  max-width: 100%;
+  height: auto;
+  border: 3px solid #ff0000;
+  border-radius: 10px;
+  box-shadow: 0 0 20px #800000;
 }
+
+/* Story area */
+#story {
+  margin: 20px auto;
+  padding: 15px;
+  width: 80%;
+  background-color: #1a1a1a;
+  border: 1px solid #333;
+  border-radius: 10px;
+  box-shadow: 0 0 10px #ff3333;
+  font-size: 1.1em;
+  line-height: 1.6;
+}
+
+/* Player and enemy stats */
+#stats {
+  margin-top: 20px;
+  font-size: 1.1em;
+}
+
+#stats p {
+  margin: 5px 0;
+}
+
 #options {
-  margin: 20px;
+  margin-top: 20px;
 }
