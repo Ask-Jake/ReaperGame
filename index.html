@@ -2,15 +2,23 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Reaper RPG</title>
+  <title>Reaper: The Text Adventure</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>Reaper: The Text Adventure</h1>
 
-  <!-- This is where messages from game.js will appear -->
-  <div id="game-output"></div>
+  <!-- Display the story here -->
+  <div id="story"></div>
+
+  <!-- Input box for player name -->
+  <input type="text" id="input" placeholder="Enter your name" />
+  <button onclick="startGame()">Start Game</button>
+
+  <!-- Option buttons will be inserted here -->
+  <div id="options"></div>
 
   <script src="game.js"></script>
 </body>
 </html>
+
