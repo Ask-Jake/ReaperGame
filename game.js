@@ -42,7 +42,7 @@ function typeText(text, delay = 50, callback) {
   let i = 0;
   function type() {
     if (i < text.length) {
-      story.textcontent += text.charAt(i);
+      story. textcontent += text.charAt(i);
       i++;
       setTimeout(type, delay);
     } else if (callback) callback();
@@ -95,7 +95,7 @@ function loadScene() {
       `${player.name}: Power must come with responsibility. I will end your reign of darkness.\n` +
       `Demon Boss: You can try, ${player.name}. But I won’t go down without a fight.\n\n` +
 
-      `The Reaper readied his scythe. The Demon boss lunged with savage claws. Their battle begins...`;
+      The Reaper readied his scythe. The Demon boss lunged with savage claws. Their battle begins...`;
   } else {
     introText = `Scene: ${scene.name}. You face the ${enemy.name}.`;
   }
