@@ -2,23 +2,34 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Reaper: The Text Adventure</title>
+  <title>Reaper RPG Enhanced</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
   <h1>Reaper: The Text Adventure</h1>
 
-  <!-- Display the story here -->
+  <div id="scene-container">
+    <img id="scene-img" src="" alt="Scene" />
+  </div>
+
+  <div id="stats">
+    <div>Health: <span id="health">100</span></div>
+    <div>Armor: <span id="armor">0</span></div>
+    <div>Enemy: <span id="enemy-name"></span> (<span id="enemy-health"></span> HP)</div>
+  </div>
+
   <div id="story"></div>
 
-  <!-- Input box for player name -->
-  <input type="text" id="input" placeholder="Enter your name" />
-  <button onclick="startGame()">Start Game</button>
+  <div id="input-container">
+    <input type="text" id="input" placeholder="Enter your name" />
+    <button onclick="startGame()">Start Game</button>
+  </div>
 
-  <!-- Option buttons will be inserted here -->
   <div id="options"></div>
-
+  
+  <audio id="bg-music" loop></audio>
   <script src="game.js"></script>
 </body>
 </html>
+
 
