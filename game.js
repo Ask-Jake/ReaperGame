@@ -43,7 +43,7 @@ A feeling of malevolent power seems to suffuse the very air.`
 let curSceneIndex = 0;
 
 // Typewriter effect
-function typeText(text, delay = 25, callback) {
+function typeText(text, delay = 30, callback) {
   story.innerHTML = '';
   let i = 0;
   function type() {
@@ -81,7 +81,7 @@ They began a rebellion, traveling to different parts of the demon society
 and recruiting those who wanted freedom from the demons' cruel rule.
 They fought many battles, often sustaining heavy losses, but eventually their numbers grew.
 
-This powerful force grew until it was noticed by the Demon CEO.
+This powerful force grew until the Demon CEO noticed it.
 He sent his most trustworthy apprentice to deliver the news to the Demon Boss.
 The Demon Boss gathered a horde of low-level demons and marched toward the demonic temple—
 where he knew he would find ${player.name}.
@@ -100,7 +100,7 @@ I won't let you continue spreading darkness."
 Demon Boss: "You can try, ${player.name}, but I won’t go down without a fight..."
 `;
 
-  typeText(intro, 25, () => {
+  typeText(intro, 30, () => {
     setTimeout(loadScene, 1000);
   });
 }
