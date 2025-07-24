@@ -1,35 +1,34 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Reaper RPG Enhanced</title>
-  <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8" />
+  <title>Reaper: The Text Adventure</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <h1>Reaper: The Text Adventure</h1>
 
-  <div id="scene-container">
-    <img id="scene-img" src="" alt="Scene" />
-  </div>
-
-  <div id="stats">
-    <div>Health: <span id="health">100</span></div>
-    <div>Armor: <span id="armor">0</span></div>
-    <div>Enemy: <span id="enemy-name"></span> (<span id="enemy-health"></span> HP)</div>
-  </div>
-
-  <div id="story"></div>
-
   <div id="input-container">
-    <input type="text" id="input" placeholder="Enter your name" />
+    <input type="text" id="input" placeholder="Enter your name..." />
     <button onclick="startGame()">Start Game</button>
   </div>
 
+  <img id="scene-img" src="" alt="Scene Image" width="600" style="display:block;margin:20px auto;" />
+
+  <div id="story" style="white-space: pre-line; margin: 20px;"></div>
+
+  <div id="stats">
+    <p><strong>Player HP:</strong> <span id="health">100</span></p>
+    <p><strong>Armor:</strong> <span id="armor">0</span></p>
+    <p><strong>Enemy:</strong> <span id="enemy-name"></span></p>
+    <p><strong>Enemy HP:</strong> <span id="enemy-health"></span></p>
+  </div>
+
   <div id="options"></div>
-  
+
   <audio id="bg-music" loop></audio>
+
   <script src="game.js"></script>
 </body>
 </html>
-
 
