@@ -59,7 +59,7 @@ button: hover {
 /* Story area */
 #story {
   width: 60%;
-  margin: 20px auto;
+  margin: 200px auto; //Centers it
   padding: 15px;
   background-color: rgba(0, 0, 0, 0.6); /* Optional: gives it a dark background */
   color: white;
