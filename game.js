@@ -6,7 +6,7 @@ const healthEl = document.getElementById('health');
 const armorEl = document.getElementById('armor');
 const enemyNameEl = document.getElementById('enemy-name');
 const enemyHealthEl = document.getElementById('enemy-health');
-const sceneImg = document.getElementById('scene-img');
+const sceneImg = document.getElementById('reaper.png');
 const bgMusic = document.getElementById('bg-music');
 
 let player = { name: '', health: 100, armor: 0, strength: 10 };
