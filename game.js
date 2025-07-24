@@ -13,9 +13,9 @@ const introImg = document.getElementById('intro-img');
 let player = { name: '', health: 100, armor: 0, strength: 10 };
 let enemy = null;
 let curSceneIndex = 0;
-let currentTypeId = 0; // Used to interrupt typewriter
+let currentTypeId = 0;
 
-// Scene configuration
+// Scenes configuration
 const scenes = [
   {
     name: 'Temple',
@@ -45,14 +45,15 @@ A feeling of malevolent power seems to suffuse the very air.`
   }
 ];
 
-// Typewriter with interruption
+// Typewriter effect with interruption support
 function typeText(text, delay = 30, callback) {
+  currentTypeId++;
+  const myId = currentTypeId;
   story.innerHTML = '';
   let i = 0;
-  const myTypeId = ++currentTypeId;
 
   function type() {
-    if (myTypeId !== currentTypeId) return;
+    if (myId !== currentTypeId) return;
     if (i < text.length) {
       story.innerHTML += text.charAt(i);
       i++;
@@ -65,7 +66,7 @@ function typeText(text, delay = 30, callback) {
   type();
 }
 
-// Intro text on load
+// Intro text on page load
 window.onload = function () {
   const introText = `
 The supernatural society was a place of fear and danger.
@@ -132,7 +133,7 @@ Yet you managed to land a few blows of your own.
   typeText(sceneNarrative, 30, showCombatOptions);
 }
 
-// Update player/enemy stats
+// Update stats
 function updateStats() {
   healthEl.textContent = player.health;
   armorEl.textContent = player.armor;
@@ -149,10 +150,11 @@ function showCombatOptions() {
   `;
 }
 
-// Player actions
+// Player action handler
 function doAction(act) {
   let text = '';
   const damage = Math.floor(Math.random() * player.strength) + 5;
+
   switch (act) {
     case 'armor':
       player.armor += 5;
@@ -175,7 +177,7 @@ function doAction(act) {
   else endBattle(text);
 }
 
-// Enemy attacks back
+// Enemy turn
 function enemyTurn(prevText) {
   let dmg = Math.floor(Math.random() * enemy.strength) + 3;
   let armorAbsorb = Math.min(dmg, player.armor);
@@ -194,7 +196,7 @@ function enemyTurn(prevText) {
   checkPlayerDeath();
 }
 
-// Player loses
+// Game over if player dies
 function checkPlayerDeath() {
   if (player.health <= 0) {
     typeText(`You have been defeated by ${enemy.name}. Game Over.`);
@@ -202,18 +204,18 @@ function checkPlayerDeath() {
   }
 }
 
-// End of battle
+// Battle ends → wait for click to move on
 function endBattle(prevText) {
-  typeText(`${prevText}\nYou've defeated ${enemy.name}!\n\nClick below to continue to the next scene.`, () => {
+  typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = '';
     if (curSceneIndex < scenes.length - 1) {
-      const continueBtn = document.createElement('button');
-      continueBtn.textContent = 'Continue';
-      continueBtn.onclick = () => {
+      const btn = document.createElement('button');
+      btn.textContent = 'Continue';
+      btn.onclick = () => {
         curSceneIndex++;
         loadScene();
       };
-      options.appendChild(continueBtn);
+      options.appendChild(btn);
     } else {
       typeText("Congratulations! You've defeated all the demons and restored balance!");
     }
