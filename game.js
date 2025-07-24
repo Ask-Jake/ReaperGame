@@ -9,6 +9,7 @@ const enemyHealthEl = document.getElementById('enemy-health');
 const sceneImg = document.getElementById('scene-img');
 const bgMusic = document.getElementById('bg-music');
 const introImg = document.getElementById('intro-img');
+const skipBtn = document.getElementById('skip-button'); // ✅ NEW
 
 let player = { name: '', health: 100, armor: 0, strength: 10 };
 let enemy = null;
@@ -31,39 +32,55 @@ A feeling of malevolent power seems to suffuse the very air.`
   },
   {
     name: 'Forest',
-    img: 'scene2-forest.png',
+    img: 'forest.png',
     music: 'forest.mp3',
     enemy: { name: 'Demon Supervisor', health: 80, strength: 12 },
     description: 'A misty forest full of corrupted creatures and twisted trees...'
   },
   {
     name: 'Metropolis',
-    img: 'scene3-city.png',
+    img: 'city.png',
     music: 'city.mp3',
     enemy: { name: 'Demon CEO', health: 150, strength: 20 },
     description: 'A towering city of infernal architecture, dominated by greed and control...'
   }
 ];
 
-// Typewriter effect with interruption support
+// Typewriter effect with interruption and skip support ✅ UPDATED
 function typeText(text, delay = 30, callback) {
   currentTypeId++;
   const myId = currentTypeId;
-  story.innerHTML = ''; // Clear any previous text
+  story.innerHTML = '';
   let i = 0;
 
+  skipBtn.style.display = 'inline-block'; // ✅ Show skip button
+  skipBtn.disabled = false;
+  skipBtn._skipTarget = { text, callback }; // ✅ Store callback for skipping
+
   function type() {
-    if (myId !== currentTypeId) return; // Cancel old text if a new one starts
+    if (myId !== currentTypeId) return;
     if (i < text.length) {
       story.innerHTML += text.charAt(i);
       i++;
       setTimeout(type, delay);
-    } else if (callback) {
-      callback();
+    } else {
+      skipBtn.style.display = 'none'; // ✅ Hide when done
+      if (callback) callback();
     }
   }
 
   type();
+}
+
+// ✅ Skip function
+function skipTyping() {
+  if (skipBtn._skipTarget) {
+    const { text, callback } = skipBtn._skipTarget;
+    currentTypeId++; // cancel current typewriter
+    story.innerHTML = text;
+    skipBtn.style.display = 'none';
+    if (callback) callback();
+  }
 }
 
 // Intro text on page load
@@ -81,8 +98,8 @@ This violated the natural order of life and caused many of the reapers to want f
 
 // Start game
 function startGame() {
-  currentTypeId++; // cancel any ongoing typewriter
-  story.innerHTML = ''; // clear the intro story
+  currentTypeId++;
+  story.innerHTML = '';
   player.name = input.value.trim() || 'Reaper';
   document.getElementById('input-container').style.display = 'none';
   introImg.style.display = 'none';
@@ -152,7 +169,7 @@ function showCombatOptions() {
   `;
 }
 
-// Handle actions
+// Handle player actions
 function doAction(act) {
   let text = '';
   const damage = Math.floor(Math.random() * player.strength) + 5;
@@ -179,7 +196,7 @@ function doAction(act) {
   else endBattle(text);
 }
 
-// Enemy response
+// Enemy counterattack
 function enemyTurn(prevText) {
   let dmg = Math.floor(Math.random() * enemy.strength) + 3;
   let armorAbsorb = Math.min(dmg, player.armor);
@@ -198,7 +215,7 @@ function enemyTurn(prevText) {
   checkPlayerDeath();
 }
 
-// Death check
+// Check for defeat
 function checkPlayerDeath() {
   if (player.health <= 0) {
     typeText(`You have been defeated by ${enemy.name}. Game Over.`);
@@ -206,7 +223,7 @@ function checkPlayerDeath() {
   }
 }
 
-// End battle logic
+// End of battle
 function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = '';
