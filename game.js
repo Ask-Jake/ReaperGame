@@ -14,9 +14,9 @@ let enemy = null;
 
 // Scenes configuration
 const scenes = [
-  { name: 'Temple', img: 'temple.jpg', music: 'temple.mp3', enemy: { name: 'Demon Boss', health: 50, strength: 8 } },
-  { name: 'Forest', img: 'forest.jpg', music: 'forest.mp3', enemy: { name: 'Demon Supervisor', health: 80, strength: 12 } },
-  { name: 'Metropolis', img: 'city.jpg', music: 'city.mp3', enemy: { name: 'Demon CEO', health: 150, strength: 20 } }
+  { name: 'Temple', img: 'temple.png', music: 'temple.mp3', enemy: { name: 'Demon Boss', health: 50, strength: 8 } },
+  { name: 'Forest', img: 'forest.png', music: 'forest.mp3', enemy: { name: 'Demon Supervisor', health: 80, strength: 12 } },
+  { name: 'Metropolis', img: 'city.png', music: 'city.mp3', enemy: { name: 'Demon CEO', health: 150, strength: 20 } }
 ];
 let curSceneIndex = 0;
 
