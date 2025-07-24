@@ -58,21 +58,17 @@ button: hover {
 
 /* Story area */
 #story {
-  background-color: #1a1a1a;
-  border: 2px solid red;
-  border-radius: 10px;
-  padding: 20px;
+  width: 60%;
   margin: 20px auto;
-  width: 90%;
-  max-width: 900px;
-  text-align: center;
-  font-size: 1.1em;
+  padding: 15px;
+  background-color: rgba(0, 0, 0, 0.6); /* Optional: gives it a dark background */
   color: white;
-  box-shadow: 0 0 10px red;
+  border-radius: 10px;
+  text-align: left;
   white-space: pre-line;
-  display: block;
+  font-family: 'Courier New', monospace;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
 }
-
 /* Player and enemy stats */
 #stats {
   margin-top: 20px;
