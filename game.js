@@ -19,7 +19,7 @@ let currentTypeId = 0;
 const scenes = [
   {
     name: 'Temple',
-    img: 'scene1-temple.png',
+    img: 'temple.png',
     music: 'temple.mp3',
     enemy: { name: 'Demon Boss', health: 50, strength: 8 },
     description: `SCENE 1 – TEMPLE:
