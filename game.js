@@ -13,12 +13,13 @@ const introImg = document.getElementById('intro-img');
 let player = { name: '', health: 100, armor: 0, strength: 10 };
 let enemy = null;
 let curSceneIndex = 0;
+let currentTypeId = 0; // Used to interrupt typewriter
 
-// Scenes configuration
+// Scene configuration
 const scenes = [
   {
     name: 'Temple',
-    img: 'temple.png',
+    img: 'scene1-temple.png',
     music: 'temple.mp3',
     enemy: { name: 'Demon Boss', health: 50, strength: 8 },
     description: `SCENE 1 – TEMPLE:
@@ -30,35 +31,41 @@ A feeling of malevolent power seems to suffuse the very air.`
   },
   {
     name: 'Forest',
-    img: 'forest.png',
+    img: 'scene2-forest.png',
     music: 'forest.mp3',
     enemy: { name: 'Demon Supervisor', health: 80, strength: 12 },
     description: 'A misty forest full of corrupted creatures and twisted trees...'
   },
   {
     name: 'Metropolis',
-    img: 'city.png',
+    img: 'scene3-city.png',
     music: 'city.mp3',
     enemy: { name: 'Demon CEO', health: 150, strength: 20 },
     description: 'A towering city of infernal architecture, dominated by greed and control...'
   }
 ];
 
-// Typewriter effect
+// Typewriter with interruption
 function typeText(text, delay = 30, callback) {
   story.innerHTML = '';
   let i = 0;
+  const myTypeId = ++currentTypeId;
+
   function type() {
+    if (myTypeId !== currentTypeId) return;
     if (i < text.length) {
       story.innerHTML += text.charAt(i);
       i++;
       setTimeout(type, delay);
-    } else if (callback) callback();
+    } else if (callback) {
+      callback();
+    }
   }
+
   type();
 }
 
-// Intro text on page load
+// Intro text on load
 window.onload = function () {
   const introText = `
 The supernatural society was a place of fear and danger.
@@ -106,7 +113,7 @@ This powerful force grew in numbers until the demon CEO had no choice but to not
 to express the news to the demon boss. Once hearing of this, he amassed a group of
 lower-level demons and headed to the demonic temple where he knew he would find ${player.name}.
 
-Once the demon boss arrived, he was met with a yell from behind him right before he entered the temple.The first fight between the Grim Reaper and the Demon Boss began with the Grim Reaper summoning his scythe and the Demon Boss laughing at the challenge.
+Once the demon boss arrived, he was met with a yell from behind him right before he entered the temple. The first fight between the Grim Reaper and the Demon Boss began with the Grim Reaper summoning his scythe and the Demon Boss laughing at the challenge.
 
 ${player.name}: Demon Boss, your time has come. You have caused too much suffering and chaos amongst the living. It's time for you to pay the price.
 
@@ -125,6 +132,14 @@ Yet you managed to land a few blows of your own.
   typeText(sceneNarrative, 30, showCombatOptions);
 }
 
+// Update player/enemy stats
+function updateStats() {
+  healthEl.textContent = player.health;
+  armorEl.textContent = player.armor;
+  enemyNameEl.textContent = enemy.name;
+  enemyHealthEl.textContent = enemy.health;
+}
+
 // Combat options
 function showCombatOptions() {
   options.innerHTML = `
@@ -135,14 +150,12 @@ function showCombatOptions() {
 }
 
 // Player actions
-// ... (keep everything above unchanged)
-
 function doAction(act) {
   let text = '';
   const damage = Math.floor(Math.random() * player.strength) + 5;
   switch (act) {
     case 'armor':
-      player. armor += 5;
+      player.armor += 5;
       text = `${player.name} picks up armor (+5).`;
       break;
     case 'potion':
@@ -154,12 +167,15 @@ function doAction(act) {
       text = `${player.name} hits ${enemy.name} for ${damage} damage.`;
       break;
   }
+
   updateStats();
+
   if (act !== 'fight') enemyTurn(text);
   else if (enemy.health > 0) enemyTurn(text);
   else endBattle(text);
 }
 
+// Enemy attacks back
 function enemyTurn(prevText) {
   let dmg = Math.floor(Math.random() * enemy.strength) + 3;
   let armorAbsorb = Math.min(dmg, player.armor);
@@ -178,6 +194,15 @@ function enemyTurn(prevText) {
   checkPlayerDeath();
 }
 
+// Player loses
+function checkPlayerDeath() {
+  if (player.health <= 0) {
+    typeText(`You have been defeated by ${enemy.name}. Game Over.`);
+    options.innerHTML = '';
+  }
+}
+
+// End of battle
 function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!\n\nClick below to continue to the next scene.`, () => {
     options.innerHTML = '';
