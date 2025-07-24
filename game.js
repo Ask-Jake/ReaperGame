@@ -31,14 +31,15 @@ A feeling of malevolent power seems to suffuse the very air.`,
       const name = player.name;
       return `
 ${name} was the first to take a stand against the demons and challenge their authority.
-You have always been an outcast amongst the reapers, misunderstood and mocked for your rebellion.
+You have always been an outcast amongst the reapers, misunderstood and mocked for your tenacity.
 
-They began a rebellion, recruiting those who longed for freedom. Battles were fought, losses endured.
-Eventually, the demon CEO took notice and sent word to the Demon Boss.
+You began a rebellion, recruiting those who longed for freedom. Battles were fought, losses endured.
+Eventually, the demon CEO had no choice but to take notice and sent word to the Demon Boss.
+
 
 The Demon Boss, with a troop of lesser demons, stormed toward the temple to crush the uprising.
 
-Suddenly, a yell cuts through the air. The Reaper appears. The Demon Boss sneers.
+Suddenly, a yell cuts through the air. The Reaper appears—the Demon Boss sneers.
 
 ${name}: "Demon Boss, your time has come. You’ve caused too much suffering."
 
