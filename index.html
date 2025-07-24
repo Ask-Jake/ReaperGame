@@ -4,22 +4,26 @@
   <meta charset="UTF-8" />
   <title>Reaper: The Text Adventure</title>
   <link rel="stylesheet" href="style.css" />
-  <!-- Font imports -->
-  <link href="https://fonts.googleapis.com/css2?family=MedievalSharp&family=UnifrakturCook:wght@700&family=VT323&display=swap" rel="stylesheet">
 </head>
 <body>
   <h1>Reaper: The Text Adventure</h1>
 
+  <!-- Grim Reaper intro image -->
+  <img id="intro-img" src="reaper.png" alt="Grim Reaper" width="600" style="display:block; margin:20px auto;" />
+
+  <!-- Input for player name -->
   <div id="input-container">
     <input type="text" id="input" placeholder="Enter your name..." />
     <button onclick="startGame()">Start Game</button>
   </div>
 
-  <img id="intro-img" src="reaper.png" alt="Grim Reaper" width="600" style="display:block;margin:20px auto;" />
-  <img id="scene-img" src="" alt="Scene Image" width="600" style="display:none;margin:20px auto;" />
+  <!-- Scene image (hidden until game starts) -->
+  <img id="scene-img" src="" alt="Scene Image" width="600" style="display:none; margin:20px auto;" />
 
+  <!-- Main story area -->
   <div id="story"></div>
 
+  <!-- Player and enemy stats -->
   <div id="stats">
     <p><strong>Player HP:</strong> <span id="health">100</span></p>
     <p><strong>Armor:</strong> <span id="armor">0</span></p>
@@ -27,10 +31,13 @@
     <p><strong>Enemy HP:</strong> <span id="enemy-health"></span></p>
   </div>
 
+  <!-- Combat options -->
   <div id="options"></div>
 
+  <!-- Background music -->
   <audio id="bg-music" loop></audio>
 
+  <!-- JavaScript logic -->
   <script src="game.js"></script>
 </body>
 </html>
