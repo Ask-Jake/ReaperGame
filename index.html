@@ -8,19 +8,22 @@
 <body>
   <h1>Reaper: The Text Adventure</h1>
 
-  <!-- Grim Reaper image shown before the game starts -->
-  <img id="intro-img" src="grim-reaper.png" alt="Grim Reaper" width="600" style="display:block;margin:20px auto;" />
+  <!-- Grim Reaper splash image (shown on load only) -->
+  <img id="intro-img" src="grim-reaper.png" alt="Grim Reaper" width="600" style="display:block; margin: 20px auto;" />
 
+  <!-- Name input shown on load -->
   <div id="input-container">
     <input type="text" id="input" placeholder="Enter your name..." />
     <button onclick="startGame()">Start Game</button>
   </div>
 
   <!-- Scene image hidden by default -->
-  <img id="scene-img" src="" alt="Scene Image" width="600" style="display:none; margin:20px auto;" />
+  <img id="scene-img" src="" alt="Scene Image" width="600" style="display:none; margin: 20px auto;" />
 
+  <!-- Story text -->
   <div id="story" style="white-space: pre-line; margin: 20px;"></div>
 
+  <!-- Player and enemy stats -->
   <div id="stats">
     <p><strong>Player HP:</strong> <span id="health">100</span></p>
     <p><strong>Armor:</strong> <span id="armor">0</span></p>
@@ -28,10 +31,13 @@
     <p><strong>Enemy HP:</strong> <span id="enemy-health"></span></p>
   </div>
 
+  <!-- Action buttons -->
   <div id="options"></div>
 
+  <!-- Background music -->
   <audio id="bg-music" loop></audio>
 
+  <!-- Game logic -->
   <script src="game.js"></script>
 </body>
 </html>
