@@ -179,15 +179,18 @@ function enemyTurn(prevText) {
 }
 
 function endBattle(prevText) {
-  typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
-    curSceneIndex++;
-    if (curSceneIndex < scenes.length) {
-      setTimeout(() => {
+  typeText(`${prevText}\nYou've defeated ${enemy.name}!\n\nClick below to continue to the next scene.`, () => {
+    options.innerHTML = '';
+    if (curSceneIndex < scenes.length - 1) {
+      const continueBtn = document.createElement('button');
+      continueBtn.textContent = 'Continue';
+      continueBtn.onclick = () => {
+        curSceneIndex++;
         loadScene();
-      }, 2000); // 2 second pause before next scene
+      };
+      options.appendChild(continueBtn);
     } else {
       typeText("Congratulations! You've defeated all the demons and restored balance!");
-      options.innerHTML = '';
     }
   });
 }
