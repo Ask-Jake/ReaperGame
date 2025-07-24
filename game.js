@@ -37,7 +37,7 @@ const scenes = [
 let curSceneIndex = 0;
 
 // Typewriter effect
-function typeText(text, delay = 25, callback) {
+function typeText(text, delay = 50, callback) {
   story.innerHTML = '';
   let i = 0;
   function type() {
