@@ -16,6 +16,7 @@ h1 {
   color: #ff6666;
   margin-bottom: 20px;
   text-shadow: 0 0 10px #ff0000;
+  font-family: 'UnifrakturCook', cursive;
 }
 
 /* Input and start button */
@@ -25,15 +26,17 @@ h1 {
 
 #input {
   padding: 10px;
-  font-size: 1em;
+  font-size: 1.1em;
   width: 250px;
   border: none;
   border-radius: 5px;
+  font-family: 'VT323', monospace;
+  letter-spacing: 1px;
 }
 
 button {
   padding: 10px 20px;
-  font-size: 1em;
+  font-size: 1.1em;
   background-color: #b30000;
   color: white;
   border: none;
@@ -41,9 +44,11 @@ button {
   margin: 5px;
   cursor: pointer;
   transition: background-color 0.3s;
+  font-family: 'VT323', monospace;
+  letter-spacing: 1px;
 }
 
-button: hover {
+button:hover {
   background-color: #ff1a1a;
 }
 
@@ -56,10 +61,19 @@ button: hover {
   box-shadow: 0 0 20px #800000;
 }
 
+/* Intro image */
+#intro-img {
+  max-width: 100%;
+  height: auto;
+  border: 3px solid #666;
+  border-radius: 10px;
+  box-shadow: 0 0 30px #444;
+}
+
 /* Story area */
 #story {
   width: 60%;
-  margin: 30px auto; /* centers it horizontally */
+  margin: 30px auto;
   padding: 20px;
   background-color: rgba(0, 0, 0, 0.8);
   color: #fff;
@@ -67,8 +81,6 @@ button: hover {
   text-align: left;
   white-space: pre-line;
   font-family: 'Courier New', monospace;
-
-  /* glowing red effect */
   box-shadow: 0 0 15px red, 0 0 30px darkred;
   border: 2px solid rgba(255, 0, 0, 0.7);
 }
