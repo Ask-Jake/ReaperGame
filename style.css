@@ -1,11 +1,13 @@
 /* General body styling */
 body {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   background-color: #0d0d0d;
-  color: #e0e0e0;
   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  text-align: center;
+  color: white;
   margin: 0;
-  padding: 20px;
+  padding: 0;
 }
 
 /* Game title */
@@ -61,12 +63,14 @@ button: hover {
   border-radius: 10px;
   padding: 20px;
   margin: 20px auto;
+  width: 90%;
   max-width: 900px;
   text-align: center;
   font-size: 1.1em;
   color: white;
   box-shadow: 0 0 10px red;
   white-space: pre-line;
+  display: block;
 }
 
 /* Player and enemy stats */
