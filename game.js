@@ -49,11 +49,11 @@ A feeling of malevolent power seems to suffuse the very air.`
 function typeText(text, delay = 30, callback) {
   currentTypeId++;
   const myId = currentTypeId;
-  story.innerHTML = '';
+  story.innerHTML = ''; // Clear any previous text
   let i = 0;
 
   function type() {
-    if (myId !== currentTypeId) return;
+    if (myId !== currentTypeId) return; // Cancel old text if a new one starts
     if (i < text.length) {
       story.innerHTML += text.charAt(i);
       i++;
@@ -81,6 +81,8 @@ This violated the natural order of life and caused many of the reapers to want f
 
 // Start game
 function startGame() {
+  currentTypeId++; // cancel any ongoing typewriter
+  story.innerHTML = ''; // clear the intro story
   player.name = input.value.trim() || 'Reaper';
   document.getElementById('input-container').style.display = 'none';
   introImg.style.display = 'none';
@@ -141,7 +143,7 @@ function updateStats() {
   enemyHealthEl.textContent = enemy.health;
 }
 
-// Combat options
+// Show combat options
 function showCombatOptions() {
   options.innerHTML = `
     <button onclick="doAction('armor')">Pick up Armor</button>
@@ -150,7 +152,7 @@ function showCombatOptions() {
   `;
 }
 
-// Player action handler
+// Handle actions
 function doAction(act) {
   let text = '';
   const damage = Math.floor(Math.random() * player.strength) + 5;
@@ -177,7 +179,7 @@ function doAction(act) {
   else endBattle(text);
 }
 
-// Enemy turn
+// Enemy response
 function enemyTurn(prevText) {
   let dmg = Math.floor(Math.random() * enemy.strength) + 3;
   let armorAbsorb = Math.min(dmg, player.armor);
@@ -196,7 +198,7 @@ function enemyTurn(prevText) {
   checkPlayerDeath();
 }
 
-// Game over if player dies
+// Death check
 function checkPlayerDeath() {
   if (player.health <= 0) {
     typeText(`You have been defeated by ${enemy.name}. Game Over.`);
@@ -204,7 +206,7 @@ function checkPlayerDeath() {
   }
 }
 
-// Battle ends → wait for click to move on
+// End battle logic
 function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = '';
