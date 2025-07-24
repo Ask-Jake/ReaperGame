@@ -1,0 +1,29 @@
+body {
+  background-color: #111;
+  color: #eee;
+  font-family: 'Courier New', Courier, monospace;
+  padding: 20px;
+}
+#game-container {
+  max-width: 800px;
+  margin: auto;
+}
+#story {
+  white-space: pre-wrap;
+  margin-bottom: 20px;
+}
+#input {
+  width: 70%;
+  padding: 10px;
+  margin-right: 10px;
+}
+button {
+  padding: 10px 20px;
+  background-color: crimson;
+  color: white;
+  border: none;
+  cursor: pointer;
+}
+button:hover {
+  background-color: darkred;
+}
