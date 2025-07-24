@@ -103,13 +103,12 @@ They began a rebellion, travelling to different parts of the demon society
 and recruiting those who wanted freedom from the demons' cruel rule. They fought many battles,
 often sustaining heavy losses, but eventually their numbers grew, and they became a powerful force.
 
-This powerful force grew in numbers until the demon CEO noticed it. He sent down his most trustworthy apprentice
+This powerful force grew in numbers until the demon CEO had no choice but to notice it. He sent down his most trustworthy apprentice
 to express the news to the demon boss. Once hearing of this, he amassed a group of
 lower-level demons and headed to the demonic temple where he knew he would find ${player.name}.
 
 Once the demon boss arrived, he was met with a yell from behind him right before he entered the temple.
-The first fight between the Grim Reaper and the Demon Boss began with the Grim Reaper summoning his scythe
-and the Demon Boss laughing at the challenge.
+The first fight between the Grim Reaper and the Demon Boss began with the Grim Reaper summoning his scythe and the Demon Boss laughing at the challenge.
 
 ${player.name}: Demon Boss, your time has come. You have caused too much suffering and chaos amongst the living. It's time for you to pay the price.
 
@@ -138,6 +137,8 @@ function showCombatOptions() {
 }
 
 // Player actions
+// ... (keep everything above unchanged)
+
 function doAction(act) {
   let text = '';
   const damage = Math.floor(Math.random() * player.strength) + 5;
@@ -161,37 +162,34 @@ function doAction(act) {
   else endBattle(text);
 }
 
-// Enemy turn
 function enemyTurn(prevText) {
-  const dmg = Math.max(0, Math.floor(Math.random() * enemy.strength) + 3 - player.armor);
-  player.health -= dmg;
-  player.armor = Math.max(0, player.armor - dmg);
+  let dmg = Math.floor(Math.random() * enemy.strength) + 3;
+  let armorAbsorb = Math.min(dmg, player.armor);
+  let healthDamage = dmg - armorAbsorb;
+
+  player.armor -= armorAbsorb;
+  player.health -= healthDamage;
+
   updateStats();
-  typeText(`${prevText}\n${enemy.name} hits you for ${dmg}.`, showCombatOptions);
+
+  typeText(
+    `${prevText}\n${enemy.name} attacks! Damage: ${dmg} → Armor blocked: ${armorAbsorb}, HP lost: ${healthDamage}.`,
+    showCombatOptions
+  );
+
   checkPlayerDeath();
 }
 
-// End battle
 function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     curSceneIndex++;
-    if (curSceneIndex < scenes.length) loadScene();
-    else typeText("Congratulations! All demons defeated.");
+    if (curSceneIndex < scenes.length) {
+      setTimeout(() => {
+        loadScene();
+      }, 2000); // 2 second pause before next scene
+    } else {
+      typeText("Congratulations! You've defeated all the demons and restored balance!");
+      options.innerHTML = '';
+    }
   });
-}
-
-// Update stat display
-function updateStats() {
-  healthEl.textContent = player.health;
-  armorEl.textContent = player.armor;
-  enemyNameEl.textContent = enemy? enemy.name: '';
-  enemyHealthEl.textContent = enemy? enemy.health: '';
-}
-
-// Check if player is dead
-function checkPlayerDeath() {
-  if (player.health <= 0) {
-    typeText("You've been defeated... Game over.");
-    options.innerHTML = '';
-  }
 }
