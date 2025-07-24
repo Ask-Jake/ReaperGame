@@ -95,8 +95,7 @@ ${scene.description}
 
 ${player.name} was the first to take a stand against the demons and challenge their authority.
 You have always been an outcast amongst the reapers, with none of them really understanding
-or too scared to try and understand your wish for freedom and going against the will of the demons.
-You were teased and mocked by the other reapers who did not join your cause,
+or too scared to try and understand your wish for freedom and going against the will of the demons. You were teased and mocked by the other reapers who did not join your cause,
 but you knew deep down that you were right and were determined to make a stand.
 
 They began a rebellion, travelling to different parts of the demon society
@@ -107,8 +106,7 @@ This powerful force grew in numbers until the demon CEO had no choice but to not
 to express the news to the demon boss. Once hearing of this, he amassed a group of
 lower-level demons and headed to the demonic temple where he knew he would find ${player.name}.
 
-Once the demon boss arrived, he was met with a yell from behind him right before he entered the temple.
-The first fight between the Grim Reaper and the Demon Boss began with the Grim Reaper summoning his scythe and the Demon Boss laughing at the challenge.
+Once the demon boss arrived, he was met with a yell from behind him right before he entered the temple.The first fight between the Grim Reaper and the Demon Boss began with the Grim Reaper summoning his scythe and the Demon Boss laughing at the challenge.
 
 ${player.name}: Demon Boss, your time has come. You have caused too much suffering and chaos amongst the living. It's time for you to pay the price.
 
@@ -121,7 +119,7 @@ Demon Boss: You can try, ${player.name}, but you know I won't go down without a 
 The Reaper was steadfast and confident in his mission.
 The Demon Boss began to attack with swipes of his claws,
 but the Grim Reaper was able to block each attack with his scythe—except one—
-yet you managed to land a few blows of your own.
+Yet you managed to land a few blows of your own.
 `;
 
   typeText(sceneNarrative, 30, showCombatOptions);
