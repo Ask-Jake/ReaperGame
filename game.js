@@ -44,6 +44,8 @@ function typeText(text, delay = 25, callback) {
 function startGame() {
   player.name = input.value.trim() || 'Reaper';
   document.getElementById('input-container').style.display = 'none';
+  document.getElementById('intro-img').style.display = 'none'; // hide Grim Reaper image
+  document.getElementById('scene-img').style.display = 'block'; // show scene image
   loadScene();
 }
 
