@@ -22,7 +22,7 @@ const scenes = [
     music: 'temple.mp3',
     enemy: { name: 'Demon Boss', health: 50, strength: 8 },
     description: `SCENE 1 – TEMPLE:
-The camera pans over a foreboding temple in the depths of Hell.
+You are walking through the foreboding temple in the deepest depths of Hell.
 The walls are made of charred obsidian, and glowing red symbols burn into the stone.
 Flames flicker in braziers, casting macabre shadows across broken statues of demonic figures.
 The air is thick with sulfuric smoke, and the only sounds are distant screams of damned souls echoing through the dark halls.
@@ -65,9 +65,8 @@ The supernatural society was a place of fear and danger.
 It was filled with powerful and malevolent demons, dark magic,
 and a rigid hierarchy where the demons held absolute power over the grim reapers.
 The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.
-This violated the natural order of life and caused many of the reapers to want freedom and to fight for it—but only one would act.
+This violated the natural order of life and caused many of the reapers to want freedom and to fight for it, but only one would act.
 
-------------------------------------------------------------------------------------------------------------------------
 `;
   typeText(introText);
 };
