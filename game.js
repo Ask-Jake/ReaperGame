@@ -42,7 +42,7 @@ function typeText(text, delay = 50, callback) {
   let i = 0;
   function type() {
     if (i < text.length) {
-      story.innerHTML += text.charAt(i);
+      story.textcontent += text.charAt(i);
       i++;
       setTimeout(type, delay);
     } else if (callback) callback();
