@@ -8,7 +8,6 @@ const enemyNameEl = document.getElementById('enemy-name');
 const enemyHealthEl = document.getElementById('enemy-health');
 const sceneImg = document.getElementById('scene-img');
 const bgMusic = document.getElementById('bg-music');
-const introImg = document.getElementById('intro-img');
 
 let player = { name: '', health: 100, armor: 0, strength: 10 };
 let enemy = null;
@@ -19,18 +18,26 @@ const scenes = [
     name: 'Temple',
     img: 'temple.png',
     music: 'temple.mp3',
+    description: `SCENE 1 – TEMPLE:
+The camera pans over a foreboding temple in the depths of Hell.
+The walls are made of charred obsidian, and glowing red symbols burn into the stone.
+Flames flicker in braziers, casting macabre shadows across broken statues of demonic figures.
+The air is thick with sulfuric smoke, and the only sounds are distant screams of damned souls echoing through the dark halls.
+A feeling of malevolent power seems to suffuse the very air.`,
     enemy: { name: 'Demon Boss', health: 50, strength: 8 }
   },
   {
     name: 'Forest',
     img: 'forest.png',
     music: 'forest.mp3',
+    description: 'Twisted trees claw at the misty air. You can barely see your hands in front of your face as growls rumble from the darkness.',
     enemy: { name: 'Demon Supervisor', health: 80, strength: 12 }
   },
   {
     name: 'Metropolis',
     img: 'city.png',
     music: 'city.mp3',
+    description: 'Crumbled skyscrapers pierce the clouds. Neon flickers weakly in the ruined streets where shadows move with sinister intent.',
     enemy: { name: 'Demon CEO', health: 150, strength: 20 }
   }
 ];
@@ -54,15 +61,9 @@ function typeText(text, delay = 25, callback) {
 // Start game
 function startGame() {
   player.name = input.value.trim() || 'Reaper';
-
-  // Hide input and Grim Reaper image
   document.getElementById('input-container').style.display = 'none';
-  introImg.style.display = 'none';
-
-  // Show scene image
-  sceneImg.style.display = 'block';
-
-  // Load first scene
+  document.getElementById('intro-img').style.display = 'none'; // Hide grim reaper image
+  document.getElementById('scene-img').style.display = 'block'; // Show scene image
   loadScene();
 }
 
@@ -75,10 +76,13 @@ function loadScene() {
 
   enemy = Object.assign({}, scene.enemy);
   updateStats();
-  typeText(`Scene: ${scene.name}. You face the ${enemy.name}.`, showCombatOptions);
+  typeText(
+    `Scene: ${scene.name}\n\n${scene.description}\n\nYou face the ${enemy.name}.`,
+    25,
+    showCombatOptions
+  );
 }
 
-// Show options
 function showCombatOptions() {
   options.innerHTML = `
     <button onclick="doAction('armor')">Pick up Armor</button>
@@ -87,38 +91,31 @@ function showCombatOptions() {
   `;
 }
 
-// Player action
-function doAction(action) {
-  let result = '';
+// Player takes action
+function doAction(act) {
+  let text = '';
   const damage = Math.floor(Math.random() * player.strength) + 5;
-
-  switch (action) {
+  switch (act) {
     case 'armor':
-      player. armor += 5;
-      result = `${player.name} picks up armor (+5).`;
+      player.armor += 5;
+      text = `${player.name} picks up armor (+5).`;
       break;
     case 'potion':
       player.health = Math.min(player.health + 20, 100);
-      result = `${player.name} uses a potion (+20 HP).`;
+      text = `${player.name} uses a potion (+20 HP).`;
       break;
     case 'fight':
       enemy.health -= damage;
-      result = `${player.name} hits ${enemy.name} for ${damage} damage.`;
+      text = `${player.name} hits ${enemy.name} for ${damage} damage.`;
       break;
   }
-
   updateStats();
-
-  if (action !== 'fight') {
-    enemyTurn(result);
-  } else if (enemy.health > 0) {
-    enemyTurn(result);
-  } else {
-    endBattle(result);
-  }
+  if (act !== 'fight') enemyTurn(text);
+  else if (enemy.health > 0) enemyTurn(text);
+  else endBattle(text);
 }
 
-// Enemy's turn
+// Enemy turn
 function enemyTurn(prevText) {
   const dmg = Math.max(0, Math.floor(Math.random() * enemy.strength) + 3 - player.armor);
   player.health -= dmg;
@@ -128,32 +125,27 @@ function enemyTurn(prevText) {
   checkPlayerDeath();
 }
 
-// End battle
+// Battle end
 function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     curSceneIndex++;
-    if (curSceneIndex < scenes.length) {
-      loadScene();
-    } else {
-      typeText("Congratulations! All demons defeated.");
-      sceneImg.style.display = 'none';
-    }
+    if (curSceneIndex < scenes.length) loadScene();
+    else typeText("Congratulations! All demons defeated.");
   });
 }
 
-// Update stats
+// Update stat display
 function updateStats() {
   healthEl.textContent = player.health;
   armorEl.textContent = player.armor;
-  enemyNameEl.textContent = enemy? enemy.name: '';
-  enemyHealthEl.textContent = enemy? enemy.health: '';
+  enemyNameEl.textContent = enemy ? enemy.name : '';
+  enemyHealthEl.textContent = enemy ? enemy.health : '';
 }
 
-// Check if player died
+// Check player death
 function checkPlayerDeath() {
   if (player.health <= 0) {
     typeText("You've been defeated... Game over.");
     options.innerHTML = '';
-    sceneImg.style.display = 'none';
   }
 }
