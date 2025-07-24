@@ -7,17 +7,17 @@
 </head>
 <body>
   <h1>Reaper: The Text Adventure</h1>
-  <img src="reaper.png" alt="Grim Reaper" style="display:block;margin:0 auto;max-width:500px;">
-  
-  <h1>Reaper: The Text Adventure</h1>
 
+  <!-- Grim Reaper image shown before the game starts -->
+  <img id="intro-img" src="grim-reaper.png" alt="Grim Reaper" width="600" style="display:block;margin:20px auto;" />
 
   <div id="input-container">
     <input type="text" id="input" placeholder="Enter your name..." />
     <button onclick="startGame()">Start Game</button>
   </div>
 
-  <img id="scene-img" src="" alt="Scene Image" width="600" style="display:block;margin:20px auto;" />
+  <!-- Scene image hidden by default -->
+  <img id="scene-img" src="" alt="Scene Image" width="600" style="display:none; margin:20px auto;" />
 
   <div id="story" style="white-space: pre-line; margin: 20px;"></div>
 
@@ -35,4 +35,3 @@
   <script src="game.js"></script>
 </body>
 </html>
-
