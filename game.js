@@ -8,9 +8,8 @@ const enemyNameEl = document.getElementById('enemy-name');
 const enemyHealthEl = document.getElementById('enemy-health');
 const sceneImg = document.getElementById('scene-img');
 const bgMusic = document.getElementById('bg-music');
-const introImg = document.getElementById('intro-img'); // Grim Reaper image
+const introImg = document.getElementById('intro-img');
 
-// Initial player setup
 let player = { name: '', health: 100, armor: 0, strength: 10 };
 let enemy = null;
 
@@ -35,6 +34,7 @@ const scenes = [
     enemy: { name: 'Demon CEO', health: 150, strength: 20 }
   }
 ];
+
 let curSceneIndex = 0;
 
 // Typewriter effect
@@ -55,10 +55,14 @@ function typeText(text, delay = 25, callback) {
 function startGame() {
   player.name = input.value.trim() || 'Reaper';
 
+  // Hide input and Grim Reaper image
   document.getElementById('input-container').style.display = 'none';
-  introImg.style.display = 'none'; // Hide Grim Reaper intro image
-  sceneImg.style.display = 'block'; // Show scene image
+  introImg.style.display = 'none';
 
+  // Show scene image
+  sceneImg.style.display = 'block';
+
+  // Load first scene
   loadScene();
 }
 
@@ -74,7 +78,7 @@ function loadScene() {
   typeText(`Scene: ${scene.name}. You face the ${enemy.name}.`, showCombatOptions);
 }
 
-// Show action buttons
+// Show options
 function showCombatOptions() {
   options.innerHTML = `
     <button onclick="doAction('armor')">Pick up Armor</button>
@@ -84,31 +88,37 @@ function showCombatOptions() {
 }
 
 // Player action
-function doAction(act) {
-  let text = '';
+function doAction(action) {
+  let result = '';
   const damage = Math.floor(Math.random() * player.strength) + 5;
 
-  switch (act) {
+  switch (action) {
     case 'armor':
-      player.armor += 5;
-      text = `${player.name} picks up armor (+5).`;
+      player. armor += 5;
+      result = `${player.name} picks up armor (+5).`;
       break;
     case 'potion':
       player.health = Math.min(player.health + 20, 100);
-      text = `${player.name} uses a potion (+20 HP).`;
+      result = `${player.name} uses a potion (+20 HP).`;
       break;
     case 'fight':
       enemy.health -= damage;
-      text = `${player.name} hits ${enemy.name} for ${damage} damage.`;
+      result = `${player.name} hits ${enemy.name} for ${damage} damage.`;
       break;
   }
 
   updateStats();
-  if (enemy.health > 0) enemyTurn(text);
-  else endBattle(text);
+
+  if (action !== 'fight') {
+    enemyTurn(result);
+  } else if (enemy.health > 0) {
+    enemyTurn(result);
+  } else {
+    endBattle(result);
+  }
 }
 
-// Enemy turn
+// Enemy's turn
 function enemyTurn(prevText) {
   const dmg = Math.max(0, Math.floor(Math.random() * enemy.strength) + 3 - player.armor);
   player.health -= dmg;
@@ -118,7 +128,7 @@ function enemyTurn(prevText) {
   checkPlayerDeath();
 }
 
-// End of battle
+// End battle
 function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     curSceneIndex++;
@@ -126,7 +136,7 @@ function endBattle(prevText) {
       loadScene();
     } else {
       typeText("Congratulations! All demons defeated.");
-      options.innerHTML = '';
+      sceneImg.style.display = 'none';
     }
   });
 }
@@ -134,16 +144,16 @@ function endBattle(prevText) {
 // Update stats
 function updateStats() {
   healthEl.textContent = player.health;
-  armorEl .textContent = player.armor;
+  armorEl.textContent = player.armor;
   enemyNameEl.textContent = enemy? enemy.name: '';
   enemyHealthEl.textContent = enemy? enemy.health: '';
 }
 
-// Check death
+// Check if player died
 function checkPlayerDeath() {
   if (player.health <= 0) {
     typeText("You've been defeated... Game over.");
     options.innerHTML = '';
+    sceneImg.style.display = 'none';
   }
 }
-
