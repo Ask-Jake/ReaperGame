@@ -15,8 +15,7 @@ let enemy = null;
 // Scenes configuration
 const scenes = [
    {
-    name: 'Arrival',
-    img: 'reaper.png',
+    name: 'The Temple:',
     music: 'temple.mp3', // Or leave empty if you don’t want music yet
     enemy: { name: 'Demon Boss', health: 50, strength: 8 }
   },
