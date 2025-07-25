@@ -1,3 +1,4 @@
+/* General layout */
 body {
   display: flex;
   flex-direction: column;
@@ -9,6 +10,7 @@ body {
   padding: 0;
 }
 
+/* Title */
 h1 {
   font-size: 2.5em;
   color: #ff6666;
@@ -17,6 +19,7 @@ h1 {
   font-family: 'UnifrakturCook', cursive;
 }
 
+/* Input area */
 #input-container {
   margin: 20px 0;
 }
@@ -30,6 +33,7 @@ h1 {
   font-family: 'VT323', monospace;
 }
 
+/* Buttons */
 button {
   padding: 10px 20px;
   font-size: 1.1em;
@@ -47,14 +51,33 @@ button:hover {
   background-color: #ff1a1a;
 }
 
+/* ✅ Scene + Boss Container */
+#scene-container {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  gap: 20px;
+  margin: 20px auto;
+}
+
+/* Scene background image */
 #scene-img {
-  max-width: 100%;
-  height: auto;
+  max-width: 600px;
   border: 3px solid #ff0000;
   border-radius: 10px;
   box-shadow: 0 0 20px #800000;
 }
 
+/* Boss image styling */
+#boss-img {
+  display: none;
+  max-width: 300px;
+  border: 3px solid #ff0000;
+  border-radius: 10px;
+  box-shadow: 0 0 15px red;
+}
+
+/* Intro image */
 #intro-img {
   max-width: 100%;
   height: auto;
@@ -63,6 +86,7 @@ button:hover {
   box-shadow: 0 0 30px #444;
 }
 
+/* Story box */
 #story {
   width: 60%;
   margin: 30px auto;
@@ -78,20 +102,7 @@ button:hover {
   position: relative;
 }
 
-#stats {
-  margin-top: 20px;
-  font-size: 1.1em;
-}
-
-#stats p {
-  margin: 5px 0;
-}
-
-#options {
-  margin-top: 20px;
-}
-
-/* ✅ Skip button styling */
+/* ✅ Skip button */
 #skip-button {
   display: none;
   position: absolute;
@@ -111,4 +122,19 @@ button:hover {
 
 #skip-button:hover {
   background-color: #990000;
+}
+
+/* Stats display */
+#stats {
+  margin-top: 20px;
+  font-size: 1.1em;
+}
+
+#stats p {
+  margin: 5px 0;
+}
+
+/* Fight options */
+#options {
+  margin-top: 20px;
 }
