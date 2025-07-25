@@ -228,7 +228,7 @@ function doAction(act) {
 
   updateStats();
 
-  // ✅ Check if enemy died immediately
+  // ✅ Check if enemy died immediately after player's action
   if (enemy.health <= 0) {
     console.log("Enemy defeated, calling endBattle()");
     options.innerHTML = "";
@@ -240,7 +240,7 @@ function doAction(act) {
 }
 
 function enemyTurn(prevText) {
-  if (enemy.health <= 0) return; // Enemy already dead
+  if (enemy.health <= 0) return; // Enemy already dead, no attack
 
   const dmg = Math.floor(Math.random() * enemy.strength) + 3;
   const armorAbsorb = Math.min(dmg, player.armor);
@@ -250,47 +250,7 @@ function enemyTurn(prevText) {
   player.health -= healthDamage;
   updateStats();
 
-  // ✅ Check again if enemy died from counterattack (futureproofing)
-  if (enemy.health <= 0) {
-    console.log("Enemy defeated during enemyTurn, calling endBattle()");
-    options.innerHTML = "";
-    endBattle(prevText);
-    return;
-  }
-
-  typeText(
-    `${prevText}\n${enemy.name} attacks! Damage: ${dmg} → Armor blocked: ${armorAbsorb}, HP lost: ${healthDamage}.`,
-    showCombatOptions
-  );
-
-  checkPlayerDeath();
-}
-
-  updateStats();
-
-  // ✅ Check if enemy died immediately
-  if (enemy.health <= 0) {
-    console.log("Enemy defeated, calling endBattle()");
-    options.innerHTML = "";
-    endBattle(text);
-    return;
-  }
-
-  enemyTurn(text);
-}
-
-function enemyTurn(prevText) {
-  if (enemy.health <= 0) return; // Enemy already dead
-
-  const dmg = Math.floor(Math.random() * enemy.strength) + 3;
-  const armorAbsorb = Math.min(dmg, player.armor);
-  const healthDamage = dmg - armorAbsorb;
-
-  player.armor -= armorAbsorb;
-  player.health -= healthDamage;
-  updateStats();
-
-  // ✅ Check again if enemy died from counterattack (futureproofing)
+  // ✅ Check again if enemy died (future-proofing, if enemy had a recoil mechanic)
   if (enemy.health <= 0) {
     console.log("Enemy defeated during enemyTurn, calling endBattle()");
     options.innerHTML = "";
@@ -313,8 +273,9 @@ function checkPlayerDeath() {
   }
 }
 
-// ✅ Always updates global scene index
 function endBattle(prevText) {
+  console.log("endBattle() called. Current scene index:", window.curSceneIndex);
+
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
 
@@ -332,5 +293,6 @@ function endBattle(prevText) {
     }
   });
 }
+
 
 
