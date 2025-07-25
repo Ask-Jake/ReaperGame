@@ -39,8 +39,7 @@ A feeling of malevolent power seems to suffuse the very air.`
 The camera traverses through a twisted forest, the trees resembling gnarled fingers reaching toward the ominous sky.
 The red glow of the inferno illuminates the branches, casting an eerie aura over the surroundings.
 The ground is scorched and barren, emitting heat like burning coals.
-Malicious spirits materialize and vanish in flashes of flame, their shrieks echoing in the infernal air.
-The rustle of unseen beasts echoes in the infernal air, and a pungent smell of sulfur pervades every breath.`
+Malicious spirits materialize and vanish in flashes of flame, their shrieks echoing in the infernal air.`
   },
   {
     name: "Metropolis",
@@ -96,8 +95,8 @@ window.onload = function () {
 The supernatural society was a place of fear and danger.
 It was filled with powerful and malevolent demons, dark magic,
 and a rigid hierarchy where the demons held absolute power over the grim reapers.
-The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls before their time had come.
-This violated the natural order of life and caused many of the reapers to want freedom and to fight for it, but only one would act.
+The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.
+This violated the natural order of life and caused many reapers to seek freedom.
 
 One reaper dared to resist... and their story begins now.
 `;
@@ -114,35 +113,52 @@ function startGame() {
   loadScene();
 }
 
-// ✅ Full dialogues for each scene
+// ✅ Smooth fade-in/fade-out scene transition
+function transitionScene(callback) {
+  sceneImg.classList.add("fade-out");
+  bossImg.classList.add("fade-out");
+
+  setTimeout(() => {
+    callback();
+    sceneImg.classList.remove("fade-out");
+    bossImg.classList.remove("fade-out");
+    sceneImg.classList.add("fade-in");
+    bossImg.classList.add("fade-in");
+
+    setTimeout(() => {
+      sceneImg.classList.remove("fade-in");
+      bossImg.classList.remove("fade-in");
+    }, 1000);
+  }, 1000);
+}
+
+// ✅ Load Scene
 function loadScene() {
   const scene = scenes[curSceneIndex];
-  sceneImg.src = scene.img;
-  bgMusic.src = scene.music;
-  bgMusic.play();
 
-  enemy = { ...scene.enemy };
-  updateStats();
+  transitionScene(() => {
+    sceneImg.src = scene.img;
+    bgMusic.src = scene.music;
+    bgMusic.play();
 
-  bossImg.style.display = "block";
-  bossImg.src = scene.enemy.img;
+    enemy = { ...scene.enemy };
+    updateStats();
 
-  let sceneNarrative = `${scene.description}\n\n`;
+    bossImg.style.display = "block";
+    bossImg.src = scene.enemy.img;
 
-  if (scene.name === "Temple") {
-    sceneNarrative += `
+    let sceneNarrative = `${scene.description}\n\n`;
+
+    if (scene.name === "Temple") {
+      sceneNarrative += `
 ${player.name} was the first to take a stand against the demons and challenge their authority.
 You've always been an outcast among the reapers, mocked and misunderstood for your vision of freedom.
 But deep down, you knew you were right.
 
-You began a rebellion, traveling to different regions, recruiting allies
-who sought to escape the cruel rule of demons.
-Through battles and bloodshed, your army grew into a powerful force.
-
 Eventually, the Demon CEO took notice. He dispatched his apprentice to alert the Demon Boss,
 who in turn rallied his forces and headed for the temple to destroy you himself.
 
-Before he could enter the temple, a roar erupted behind him — and your first clash began.
+Before he could enter the temple, a roar erupted behind him — and your first clash began!
 
 ${player.name}: Demon Boss, your time has come. You have caused too much suffering. It ends now.
 
@@ -152,23 +168,14 @@ Have you ever considered that demons revel in the suffering you abhor?
 ${player.name}: I understand our power. But I also understand the responsibility that comes with it.
 I won't let you spread your darkness any longer.
 
-Demon Boss: Then come, reaper. But know I will not fall without a fight.
-
-The Demon Boss lashes out with razor-sharp claws. You block with your scythe,
-blades clashing in bursts of sparks. You land a few hits — but so does he.
-The battle for the supernatural world begins now!
+Demon Boss: Then come, reaper. But know I will not fall without a fight!
 `;
-  }
+    }
 
-  if (scene.name === "Forest") {
-    sceneNarrative += `
+    if (scene.name === "Forest") {
+      sceneNarrative += `
 After defeating the Demon Boss, ${player.name} ventures deeper into the Forest of Eternal Torment.
-
-The twisted trees close in around you, their gnarled branches like skeletal claws reaching for your soul.
-The ground is scorched and littered with bones, glowing eyes watching from the shadows.
-
 Suddenly, a hulking figure steps forward — the Demon Supervisor.
-His horns are jagged and black, and his molten-red eyes lock onto you with rage.
 
 Demon Supervisor: "So... you defeated my underling. But your rebellion ends here."
 
@@ -178,25 +185,23 @@ Demon Supervisor: "Bold words, little reaper. Let’s see if you can survive my 
 
 The Demon Supervisor raises his fiery axe, and the second battle begins!
 `;
-  }
+    }
 
-  if (scene.name === "Metropolis") {
-    sceneNarrative += `
+    if (scene.name === "Metropolis") {
+      sceneNarrative += `
 After cutting through the forest, ${player.name} finally reaches the heart of the infernal metropolis.
-The Demon CEO waits at the top of a tower of obsidian and flame, his presence suffocating the very air.
+The Demon CEO waits at the top of a tower of obsidian and flame.
 
 Demon CEO: "You've come far, reaper. But this is where your rebellion dies."
 
 ${player.name}: "This ends today. Your empire of fear is finished."
 
 Demon CEO: "We’ll see about that. Let the final battle begin!"
-
-The ground shakes as the Demon CEO summons waves of infernal energy,
-his claws crackling with dark magic. This will be the ultimate fight!
 `;
-  }
+    }
 
-  typeText(sceneNarrative, 30, showCombatOptions);
+    typeText(sceneNarrative, 30, showCombatOptions);
+  });
 }
 
 function updateStats() {
@@ -239,11 +244,7 @@ function doAction(act) {
     return;
   }
 
-  if (act !== "fight") {
-    enemyTurn(text);
-  } else {
-    enemyTurn(text);
-  }
+  enemyTurn(text);
 }
 
 function enemyTurn(prevText) {
@@ -270,25 +271,16 @@ function checkPlayerDeath() {
   }
 }
 
-// ✅ Auto transition after 5s or Continue button
+// ✅ Auto-continue to next scene after 3s
 function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
+
     if (curSceneIndex < scenes.length - 1) {
-      const btn = document.createElement("button");
-      btn.textContent = "Continue";
-      btn.onclick = () => {
+      setTimeout(() => {
         curSceneIndex++;
         loadScene();
-      };
-      options.appendChild(btn);
-
-      setTimeout(() => {
-        if (curSceneIndex < scenes.length - 1) {
-          curSceneIndex++;
-          loadScene();
-        }
-      }, 5000);
+      }, 3000);
     } else {
       bossImg.style.display = "none";
       typeText(
