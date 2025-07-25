@@ -1,3 +1,5 @@
+console.log("GAME.JS LOADED! curSceneIndex =", window.curSceneIndex);
+
 // DOM elements
 const story = document.getElementById("story");
 const input = document.getElementById("input");
