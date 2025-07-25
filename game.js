@@ -53,7 +53,7 @@ The air crackles with nether energy, and screams reverberate through the torture
   }
 ];
 
-// ✅ Typewriter
+// ✅ Typewriter effect
 function typeText(text, delay = 30, callback) {
   currentTypeId++;
   const myId = currentTypeId;
@@ -95,10 +95,10 @@ window.onload = function () {
 The supernatural society was a place of fear and danger.
 It was filled with powerful and malevolent demons, dark magic,
 and a rigid hierarchy where the demons held absolute power over the grim reapers.
-The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls before it was their time. 
+The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.
 This violated the natural order of life and caused many reapers to seek freedom.
 
-One reaper dared to resist... and their story starts now.
+One reaper dared to resist... and their story begins now.
 `;
   typeText(introText);
 };
@@ -224,6 +224,7 @@ function showCombatOptions() {
   `;
 }
 
+// ✅ FIXED doAction() so endBattle() always triggers
 function doAction(act) {
   if (enemy.health <= 0) return;
 
@@ -243,6 +244,7 @@ function doAction(act) {
 
   updateStats();
 
+  // ✅ Always check after applying damage
   if (enemy.health <= 0) {
     options.innerHTML = "";
     endBattle(text);
@@ -276,7 +278,7 @@ function checkPlayerDeath() {
   }
 }
 
-// ✅ FINAL FIX – Proper auto-transition after battle
+// ✅ FINAL endBattle() with auto-transition
 function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
