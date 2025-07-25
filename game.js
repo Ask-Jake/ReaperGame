@@ -108,11 +108,9 @@ function startGame() {
   story.textContent = "";
   player.name = input.value.trim() || "Reaper";
 
-  // Hide intro
   document.getElementById("input-container").style.display = "none";
   introImg.style.display = "none";
 
-  // Show game UI
   document.getElementById("scene-container").style.display = "flex";
   document.getElementById("stats").style.display = "block";
   document.getElementById("options").style.display = "block";
@@ -120,7 +118,7 @@ function startGame() {
   loadScene();
 }
 
-// ✅ Smooth fade-in/fade-out scene transition
+// ✅ Smooth fade transition
 function transitionScene(callback) {
   sceneImg.classList.add("fade-out");
   bossImg.classList.add("fade-out");
@@ -278,7 +276,7 @@ function checkPlayerDeath() {
   }
 }
 
-// ✅ Auto-continue to next scene after 3s
+// ✅ FINAL FIX – Proper auto-transition after battle
 function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
@@ -286,7 +284,7 @@ function endBattle(prevText) {
     if (curSceneIndex < scenes.length - 1) {
       setTimeout(() => {
         curSceneIndex++;
-        loadScene();  // Always load the next scene
+        transitionScene(() => loadScene());
       }, 3000);
     } else {
       bossImg.style.display = "none";
