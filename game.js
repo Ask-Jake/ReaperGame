@@ -12,10 +12,8 @@ const bgMusic = document.getElementById("bg-music");
 const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
-// ✅ Scene index
-if (typeof window.curSceneIndex === "undefined") {
-  window.curSceneIndex = 0;
-}
+// ✅ Track current scene index (no more resetting!)
+let curSceneIndex = 0;
 
 let player = { name: "", health: 100, armor: 0, strength: 10 };
 let enemy = null;
@@ -125,17 +123,15 @@ function startGame() {
   loadScene();
 }
 
-// ✅ FIXED Load Scene
+// ✅ Load Scene
 function loadScene() {
-  console.log("Loading scene index:", window.curSceneIndex);
+  console.log("Loading scene index:", curSceneIndex);
 
-  const scene = scenes[window.curSceneIndex];
+  const scene = scenes[curSceneIndex];
 
   // ✅ Force image reload
   sceneImg.src = scene.img + "?v=" + Date.now();
   bossImg.src = scene.enemy.img + "?v=" + Date.now();
-
-  // ✅ Boss image should always be visible
   bossImg.style.display = "block";
 
   try {
@@ -225,16 +221,16 @@ function checkPlayerDeath() {
   }
 }
 
-// ✅ FIXED End Battle
+// ✅ End Battle (Scene Transition Fix)
 function endBattle(prevText) {
-  console.log("endBattle() called. Current scene index:", window.curSceneIndex);
+  console.log("endBattle() called. Current scene index:", curSceneIndex);
 
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
 
-    if (window.curSceneIndex < scenes.length - 1) {
-      window.curSceneIndex++;
-      console.log("Scene index incremented to:", window.curSceneIndex);
+    if (curSceneIndex < scenes.length - 1) {
+      curSceneIndex++;
+      console.log("Scene index incremented to:", curSceneIndex);
 
       setTimeout(() => {
         console.log("Calling loadScene() for new scene...");
@@ -249,4 +245,3 @@ function endBattle(prevText) {
     }
   });
 }
-
