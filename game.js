@@ -286,7 +286,7 @@ function endBattle(prevText) {
     if (curSceneIndex < scenes.length - 1) {
       setTimeout(() => {
         curSceneIndex++;
-        loadScene();
+        loadScene();  // Always load the next scene
       }, 3000);
     } else {
       bossImg.style.display = "none";
