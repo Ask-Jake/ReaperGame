@@ -278,20 +278,22 @@ function checkPlayerDeath() {
 function endBattle(prevText) {
   console.log("endBattle() called → Current index:", window.curSceneIndex);
 
-  typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
-    options.innerHTML = "";
+  // Remove options
+  options.innerHTML = "";
 
-    if (window.curSceneIndex < scenes.length - 1) {
-      setTimeout(() => {
-        window.curSceneIndex = window.curSceneIndex + 1;
-        console.log("Scene index after increment:", window.curSceneIndex);
-        loadScene();
-      }, 3000);
-    } else {
-      bossImg.style.display = "none";
-      typeText(
-        `Congratulations, ${player.name}! You have defeated the Demon CEO, freed the reapers, and restored balance to the supernatural world!`
-      );
-    }
-  });
+  // Immediately increment and load next scene
+  if (window.curSceneIndex < scenes.length - 1) {
+    window.curSceneIndex = window.curSceneIndex + 1;
+    console.log("Scene index incremented to:", window.curSceneIndex);
+
+    typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
+      loadScene(); // Immediately go to next scene
+    });
+
+  } else {
+    typeText(
+      `${prevText}\nCongratulations, ${player.name}! You have defeated the Demon CEO, freed the reapers, and restored balance to the supernatural world!`
+    );
+  }
 }
+
