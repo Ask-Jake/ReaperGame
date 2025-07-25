@@ -22,7 +22,7 @@ const scenes = [
     name: "Temple",
     img: "temple.png",
     music: "temple.mp3",
-    enemy: { name: "Demon Boss", health: 50, strength: 8, img: "demonBoss.png" },
+    enemy: { name: "Demon Boss", health: 50, strength: 8, img: "Demonboss.png" },
     description: `SCENE 1 – TEMPLE:
 The camera pans over a foreboding temple in the depths of Hell.
 The walls are made of charred obsidian, and glowing red symbols burn into the stone.
