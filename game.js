@@ -1,5 +1,3 @@
-console.log("GAME.JS LOADED! curSceneIndex =", window.curSceneIndex);
-
 // DOM elements
 const story = document.getElementById("story");
 const input = document.getElementById("input");
@@ -15,15 +13,13 @@ const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
 // ✅ Ensure scene index always exists globally
-if (window.curSceneIndex === undefined) {
-  window.curSceneIndex = 0;
-}
+window.curSceneIndex = window.curSceneIndex ?? 0;
+console.log("GAME.JS LOADED! curSceneIndex =", window.curSceneIndex);
 
 let player = { name: "", health: 100, armor: 0, strength: 10 };
 let enemy = null;
 let currentTypeId = 0;
 
-// ✅ Scenes
 const scenes = [
   {
     name: "Temple",
@@ -60,7 +56,6 @@ The air crackles with nether energy, and screams reverberate through the torture
   }
 ];
 
-// ✅ Typewriter
 function typeText(text, delay = 30, callback) {
   currentTypeId++;
   const myId = currentTypeId;
@@ -97,10 +92,9 @@ function skipTyping() {
   }
 }
 
-// ✅ Intro text
 window.onload = function () {
   const introText = `
-(Update 2) The supernatural society was a place of fear and danger.
+The supernatural society was a place of fear and danger.
 It was filled with powerful and malevolent demons, dark magic,
 and a rigid hierarchy where the demons held absolute power over the grim reapers.
 The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.
@@ -111,7 +105,6 @@ One reaper dared to resist... and their story begins now.
   typeText(introText);
 };
 
-// ✅ Start Game
 function startGame() {
   currentTypeId++;
   story.textContent = "";
@@ -127,13 +120,11 @@ function startGame() {
   loadScene();
 }
 
-// ✅ Load Scene
 function loadScene() {
   console.log("Loading scene index:", window.curSceneIndex);
 
   const scene = scenes[window.curSceneIndex];
 
-  // Force image reload
   sceneImg.src = scene.img + "?v=" + Date.now();
   bossImg.src = scene.enemy.img + "?v=" + Date.now();
   bossImg.style.display = "block";
@@ -151,7 +142,6 @@ function loadScene() {
   typeText(scene.description + "\n\n", 30, showCombatOptions);
 }
 
-// ✅ Update Stats
 function updateStats() {
   healthEl.textContent = player.health;
   armorEl.textContent = player.armor;
@@ -159,7 +149,6 @@ function updateStats() {
   enemyHealthEl.textContent = enemy.health;
 }
 
-// ✅ Show Combat Options
 function showCombatOptions() {
   options.innerHTML = `
     <button onclick="doAction('armor')">Pick up Armor</button>
@@ -168,7 +157,6 @@ function showCombatOptions() {
   `;
 }
 
-// ✅ Player Actions
 function doAction(act) {
   if (enemy.health <= 0) return;
 
@@ -199,7 +187,6 @@ function doAction(act) {
   enemyTurn(text);
 }
 
-// ✅ Enemy Turn
 function enemyTurn(prevText) {
   if (enemy.health <= 0) return;
 
@@ -219,7 +206,6 @@ function enemyTurn(prevText) {
   checkPlayerDeath();
 }
 
-// ✅ Check Player Death
 function checkPlayerDeath() {
   if (player.health <= 0) {
     typeText(`You have been defeated by ${enemy.name}. Game Over.`);
@@ -227,7 +213,6 @@ function checkPlayerDeath() {
   }
 }
 
-// ✅ End Battle
 function endBattle(prevText) {
   console.log("endBattle() called. Current scene index:", window.curSceneIndex);
 
@@ -235,7 +220,7 @@ function endBattle(prevText) {
     options.innerHTML = "";
 
     if (window.curSceneIndex < scenes.length - 1) {
-      window.curSceneIndex++;
+      window.curSceneIndex = Number(window.curSceneIndex) + 1;
       console.log("Scene index incremented to:", window.curSceneIndex);
 
       setTimeout(() => {
