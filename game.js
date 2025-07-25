@@ -96,7 +96,7 @@ window.onload = function () {
 The supernatural society was a place of fear and danger.
 It was filled with powerful and malevolent demons, dark magic,
 and a rigid hierarchy where the demons held absolute power over the grim reapers.
-The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.
+The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls before their time had come.
 This violated the natural order of life and caused many of the reapers to want freedom and to fight for it, but only one would act.
 
 One reaper dared to resist... and their story begins now.
