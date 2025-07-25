@@ -138,3 +138,14 @@ button:hover {
 #options {
   margin-top: 20px;
 }
+
+/* ✅ Fade transition for scene & boss images */
+.fade-out {
+  opacity: 0;
+  transition: opacity 1s ease;
+}
+
+.fade-in {
+  opacity: 1;
+  transition: opacity 1s ease;
+}
