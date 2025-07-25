@@ -8,7 +8,7 @@
 <body>
   <h1>Reaper: The Text Adventure</h1>
 
-  <!-- Grim Reaper intro image -->
+  <!-- Intro Image -->
   <img id="intro-img" src="reaper.png" alt="Grim Reaper" width="600" style="display:block; margin:20px auto;" />
 
   <!-- Input for player name -->
@@ -17,16 +17,15 @@
     <button onclick="startGame()">Start Game</button>
   </div>
 
-  <!-- Scene image (hidden until game starts) -->
+  <!-- Scene image -->
   <img id="scene-img" src="" alt="Scene Image" width="600" style="display:none; margin:20px auto;" />
 
-  <!-- Main story area -->
+  <!-- Story area -->
   <div id="story">
-    <!-- ✅ Floating skip button -->
     <button id="skip-button" onclick="skipTyping()">Skip</button>
   </div>
 
-  <!-- Player and enemy stats -->
+  <!-- Stats -->
   <div id="stats">
     <p><strong>Player HP:</strong> <span id="health">100</span></p>
     <p><strong>Armor:</strong> <span id="armor">0</span></p>
@@ -34,13 +33,13 @@
     <p><strong>Enemy HP:</strong> <span id="enemy-health"></span></p>
   </div>
 
-  <!-- Combat options -->
+  <!-- Options -->
   <div id="options"></div>
 
-  <!-- Background music -->
+  <!-- Music -->
   <audio id="bg-music" loop></audio>
 
-  <!-- JavaScript logic -->
   <script src="game.js"></script>
 </body>
 </html>
+
