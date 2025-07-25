@@ -25,7 +25,7 @@ let currentTypeId = 0;
 const scenes = [
   {
     name: "Temple",
-    img: "scene1-temple.png",
+    img: "temple.png",
     music: "temple.mp3",
     enemy: { name: "Demon Boss", health: 50, strength: 8, img: "Demonboss.png" },
     description: `SCENE 1 – TEMPLE:
@@ -37,7 +37,7 @@ A feeling of malevolent power seems to suffuse the very air.`
   },
   {
     name: "Forest",
-    img: "scene2-forest.png",
+    img: "forest.png",
     music: "forest.mp3",
     enemy: { name: "Demon Supervisor", health: 80, strength: 12, img: "demonSupervisor.png" },
     description: `SCENE 2 – FOREST:
@@ -48,7 +48,7 @@ Malicious spirits materialize and vanish in flashes of flame, their shrieks echo
   },
   {
     name: "Metropolis",
-    img: "scene3-city.png",
+    img: "city.png",
     music: "city.mp3",
     enemy: { name: "Demon CEO", health: 150, strength: 20, img: "demonCEO.png" },
     description: `FINAL SCENE 3 – METROPOLIS:
