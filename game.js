@@ -7,6 +7,7 @@ const armorEl = document.getElementById("armor");
 const enemyNameEl = document.getElementById("enemy-name");
 const enemyHealthEl = document.getElementById("enemy-health");
 const sceneImg = document.getElementById("scene-img");
+const bossImg = document.getElementById("boss-img");
 const bgMusic = document.getElementById("bg-music");
 const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
@@ -21,7 +22,7 @@ const scenes = [
     name: "Temple",
     img: "temple.png",
     music: "temple.mp3",
-    enemy: { name: "Demon Boss", health: 50, strength: 8 },
+    enemy: { name: "Demon Boss", health: 50, strength: 8, img: "demonBoss.png" },
     description: `SCENE 1 – TEMPLE:
 The camera pans over a foreboding temple in the depths of Hell.
 The walls are made of charred obsidian, and glowing red symbols burn into the stone.
@@ -33,23 +34,23 @@ A feeling of malevolent power seems to suffuse the very air.`
     name: "Forest",
     img: "forest.png",
     music: "forest.mp3",
-    enemy: { name: "Demon Supervisor", health: 80, strength: 12 },
+    enemy: { name: "Demon Supervisor", health: 80, strength: 12, img: "demonSupervisor.png" },
     description: `SCENE 2 – FOREST:
 The camera traverses through a twisted forest, the trees resembling gnarled fingers reaching toward the ominous sky.
 The red glow of the inferno illuminates the branches, casting an eerie aura over the surroundings.
 The ground is scorched and barren, emitting heat like burning coals.
-Malicious spirits materialize and vanish in flashes of flame, their shrieks echoing in the infernal air.`
+Malicious spirits materialize and vanish in flashes of flame, their shrieks echoing in the infernal air.
+The rustle of unseen beasts echoes in the infernal air, and a pungent smell of sulfur pervades every breath.`
   },
   {
     name: "Metropolis",
     img: "city.png",
     music: "city.mp3",
-    enemy: { name: "Demon CEO", health: 150, strength: 20 },
+    enemy: { name: "Demon CEO", health: 150, strength: 20, img: "demonCEO.png" },
     description: `FINAL SCENE 3 – METROPOLIS:
 A sprawling infernal metropolis stretches endlessly before you, jagged spires stabbing the dark sky.
-Flames flicker and blaze, illuminating the blackened streets.
-Demons and fiends roam freely, their glowing eyes fixed on you with malice.
-The air crackles with nether energy, and the screams of the damned echo through the city.`
+Fiery rivers cut through streets lined with twisted buildings, each filled with demonic figures whispering and plotting.
+The air crackles with nether energy, and screams reverberate through the tortured landscape.`
   }
 ];
 
@@ -96,7 +97,7 @@ The supernatural society was a place of fear and danger.
 It was filled with powerful and malevolent demons, dark magic,
 and a rigid hierarchy where the demons held absolute power over the grim reapers.
 The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.
-This violated the natural order of life, and many reapers longed for freedom.
+This violated the natural order of life and caused many of the reapers to want freedom and to fight for it, but only one would act.
 
 One reaper dared to resist... and their story begins now.
 `;
@@ -113,7 +114,7 @@ function startGame() {
   loadScene();
 }
 
-// ✅ Full dialogue for all three boss scenes
+// ✅ Full dialogues for each scene
 function loadScene() {
   const scene = scenes[curSceneIndex];
   sceneImg.src = scene.img;
@@ -122,6 +123,9 @@ function loadScene() {
 
   enemy = { ...scene.enemy };
   updateStats();
+
+  bossImg.style.display = "block";
+  bossImg.src = scene.enemy.img;
 
   let sceneNarrative = `${scene.description}\n\n`;
 
@@ -152,7 +156,7 @@ Demon Boss: Then come, reaper. But know I will not fall without a fight.
 
 The Demon Boss lashes out with razor-sharp claws. You block with your scythe,
 blades clashing in bursts of sparks. You land a few hits — but so does he.
-The battle for the supernatural world begins now.
+The battle for the supernatural world begins now!
 `;
   }
 
@@ -172,7 +176,7 @@ ${player.name}: "Your reign of terror will end just like his. This forest will b
 
 Demon Supervisor: "Bold words, little reaper. Let’s see if you can survive my wrath!"
 
-The Demon Supervisor raises his fiery axe, and the second battle begins.
+The Demon Supervisor raises his fiery axe, and the second battle begins!
 `;
   }
 
@@ -186,6 +190,9 @@ Demon CEO: "You've come far, reaper. But this is where your rebellion dies."
 ${player.name}: "This ends today. Your empire of fear is finished."
 
 Demon CEO: "We’ll see about that. Let the final battle begin!"
+
+The ground shakes as the Demon CEO summons waves of infernal energy,
+his claws crackling with dark magic. This will be the ultimate fight!
 `;
   }
 
@@ -207,7 +214,6 @@ function showCombatOptions() {
   `;
 }
 
-// ✅ Mechanics w/ armor +10, potion +10, no negative HP
 function doAction(act) {
   if (enemy.health <= 0) return;
 
@@ -264,6 +270,7 @@ function checkPlayerDeath() {
   }
 }
 
+// ✅ Auto transition after 5s or Continue button
 function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
@@ -275,7 +282,15 @@ function endBattle(prevText) {
         loadScene();
       };
       options.appendChild(btn);
+
+      setTimeout(() => {
+        if (curSceneIndex < scenes.length - 1) {
+          curSceneIndex++;
+          loadScene();
+        }
+      }, 5000);
     } else {
+      bossImg.style.display = "none";
       typeText(
         `Congratulations, ${player.name}! You have defeated the Demon CEO, freed the reapers, and restored balance to the supernatural world!`
       );
