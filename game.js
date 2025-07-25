@@ -92,7 +92,7 @@ function skipTyping() {
 
 window.onload = function () {
   const introText = `
-(Mark when the change happens) The supernatural society was a place of fear and danger.
+The supernatural society was a place of fear and danger.
 It was filled with powerful and malevolent demons, dark magic,
 and a rigid hierarchy where the demons held absolute power over the grim reapers.
 The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.
@@ -280,15 +280,21 @@ function checkPlayerDeath() {
 
 // ✅ FINAL endBattle() with auto-transition
 function endBattle(prevText) {
+  console.log("endBattle() called. Current scene index:", curSceneIndex); // DEBUG
+
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
+    console.log("typeText finished. Checking if there is another scene..."); // DEBUG
     options.innerHTML = "";
 
     if (curSceneIndex < scenes.length - 1) {
+      console.log("There IS another scene. Advancing in 3 seconds..."); // DEBUG
       setTimeout(() => {
         curSceneIndex++;
-        loadScene(); // ✅ Directly load next scene
+        console.log("Scene index incremented to:", curSceneIndex); // DEBUG
+        loadScene();
       }, 3000);
     } else {
+      console.log("No more scenes. Showing final message."); // DEBUG
       bossImg.style.display = "none";
       typeText(
         `Congratulations, ${player.name}! You have defeated the Demon CEO, freed the reapers, and restored balance to the supernatural world!`
