@@ -12,7 +12,7 @@ const bgMusic = document.getElementById("bg-music");
 const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
-// ✅ Only initialize once
+// ✅ Scene index (initialize only once)
 if (typeof window.curSceneIndex === "undefined") {
   window.curSceneIndex = 0;
 }
@@ -21,6 +21,7 @@ let player = { name: "", health: 100, armor: 0, strength: 10 };
 let enemy = null;
 let currentTypeId = 0;
 
+// ✅ Scene definitions
 const scenes = [
   {
     name: "Temple",
@@ -94,12 +95,13 @@ function skipTyping() {
   }
 }
 
+// ✅ Intro text
 window.onload = function () {
   const introText = `
 The supernatural society was a place of fear and danger.
 It was filled with powerful and malevolent demons, dark magic,
 and a rigid hierarchy where the demons held absolute power over the grim reapers.
-The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls before their time had come. 
+The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.
 This violated the natural order of life and caused many reapers to seek freedom.
 
 One reaper dared to resist... and their story begins now.
@@ -107,6 +109,7 @@ One reaper dared to resist... and their story begins now.
   typeText(introText);
 };
 
+// ✅ Start Game
 function startGame() {
   currentTypeId++;
   story.textContent = "";
@@ -122,17 +125,15 @@ function startGame() {
   loadScene();
 }
 
+// ✅ Load Scene
 function loadScene() {
   console.log("Loading scene index:", window.curSceneIndex);
 
   const scene = scenes[window.curSceneIndex];
-  console.log("Scene data:", scene); // DEBUG
 
-  sceneImg.src = scene.img;
-  bossImg.src = scene.enemy.img;
-
-  console.log("Scene image set to:", scene.img);
-  console.log("Boss image set to:", scene.enemy.img);
+  // Force images to reload by appending a cache-busting query
+  sceneImg.src = scene.img + "?v=" + Date.now();
+  bossImg.src = scene.enemy.img + "?v=" + Date.now();
 
   try {
     bgMusic.src = scene.music;
@@ -144,72 +145,10 @@ function loadScene() {
   enemy = { ...scene.enemy };
   updateStats();
 
-  typeText(scene.description, 30, showCombatOptions);
+  typeText(scene.description + "\n\n", 30, showCombatOptions);
 }
 
-
-  enemy = { ...scene.enemy };
-  updateStats();
-
-  bossImg.style.display = "block";
-  bossImg.src = scene.enemy.img;
-
-  let sceneNarrative = `${scene.description}\n\n`;
-
-  if (scene.name === "Temple") {
-    sceneNarrative += `
-${player.name} was the first to take a stand against the demons and challenge their authority.
-You've always been an outcast among the reapers, mocked and misunderstood for your vision of freedom.
-But deep down, you knew you were right.
-
-Eventually, the Demon CEO took notice. He dispatched his apprentice to alert the Demon Boss,
-who in turn rallied his forces and headed for the temple to destroy you himself.
-
-Before he could enter the temple, a roar erupted behind him — and your first clash began!
-
-${player.name}: Demon Boss, your time has come. You have caused too much suffering. It ends now.
-
-Demon Boss: Ha — Grim Reaper, you have always been a self-righteous fool.
-Have you ever considered that demons revel in the suffering you abhor?
-
-${player.name}: I understand our power. But I also understand the responsibility that comes with it.
-I won't let you spread your darkness any longer.
-
-Demon Boss: Then come, reaper. But know I will not fall without a fight!
-`;
-  }
-
-  if (scene.name === "Forest") {
-    sceneNarrative += `
-After defeating the Demon Boss, ${player.name} ventures deeper into the Forest of Eternal Torment.
-Suddenly, a hulking figure steps forward — the Demon Supervisor.
-
-Demon Supervisor: "So... you defeated my underling. But your rebellion ends here."
-
-${player.name}: "Your reign of terror will end just like his. This forest will be free."
-
-Demon Supervisor: "Bold words, little reaper. Let’s see if you can survive my wrath!"
-
-The Demon Supervisor raises his fiery axe, and the second battle begins!
-`;
-  }
-
-  if (scene.name === "Metropolis") {
-    sceneNarrative += `
-After cutting through the forest, ${player.name} finally reaches the heart of the infernal metropolis.
-The Demon CEO waits at the top of a tower of obsidian and flame.
-
-Demon CEO: "You've come far, reaper. But this is where your rebellion dies."
-
-${player.name}: "This ends today. Your empire of fear is finished."
-
-Demon CEO: "We’ll see about that. Let the final battle begin!"
-`;
-  }
-
-  typeText(sceneNarrative, 30, showCombatOptions);
-}
-
+// ✅ Update Player/Enemy Stats
 function updateStats() {
   healthEl.textContent = player.health;
   armorEl.textContent = player.armor;
@@ -217,6 +156,7 @@ function updateStats() {
   enemyHealthEl.textContent = enemy.health;
 }
 
+// ✅ Show Combat Options
 function showCombatOptions() {
   options.innerHTML = `
     <button onclick="doAction('armor')">Pick up Armor</button>
@@ -225,6 +165,7 @@ function showCombatOptions() {
   `;
 }
 
+// ✅ Player Actions
 function doAction(act) {
   if (enemy.health <= 0) return;
 
@@ -245,7 +186,6 @@ function doAction(act) {
   updateStats();
 
   if (enemy.health <= 0) {
-    console.log("Enemy defeated → calling endBattle()");
     options.innerHTML = "";
     endBattle(text);
     return;
@@ -254,6 +194,7 @@ function doAction(act) {
   enemyTurn(text);
 }
 
+// ✅ Enemy Turn
 function enemyTurn(prevText) {
   if (enemy.health <= 0) return;
 
@@ -265,13 +206,6 @@ function enemyTurn(prevText) {
   player.health -= healthDamage;
   updateStats();
 
-  if (enemy.health <= 0) {
-    console.log("Enemy defeated during enemyTurn → calling endBattle()");
-    options.innerHTML = "";
-    endBattle(prevText);
-    return;
-  }
-
   typeText(
     `${prevText}\n${enemy.name} attacks! Damage: ${dmg} → Armor blocked: ${armorAbsorb}, HP lost: ${healthDamage}.`,
     showCombatOptions
@@ -280,6 +214,7 @@ function enemyTurn(prevText) {
   checkPlayerDeath();
 }
 
+// ✅ Check Player Death
 function checkPlayerDeath() {
   if (player.health <= 0) {
     typeText(`You have been defeated by ${enemy.name}. Game Over.`);
@@ -287,25 +222,20 @@ function checkPlayerDeath() {
   }
 }
 
+// ✅ Handle End of Battle
 function endBattle(prevText) {
-  console.log("endBattle() called → Current index:", window.curSceneIndex);
+  typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
+    options.innerHTML = "";
 
-  // Remove options
-  options.innerHTML = "";
-
-  // Immediately increment and load next scene
-  if (window.curSceneIndex < scenes.length - 1) {
-    window.curSceneIndex = window.curSceneIndex + 1;
-    console.log("Scene index incremented to:", window.curSceneIndex);
-
-    typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
-      loadScene(); // Immediately go to next scene
-    });
-
-  } else {
-    typeText(
-      `${prevText}\nCongratulations, ${player.name}! You have defeated the Demon CEO, freed the reapers, and restored balance to the supernatural world!`
-    );
-  }
+    if (window.curSceneIndex < scenes.length - 1) {
+      window.curSceneIndex++;
+      console.log("Scene index incremented to:", window.curSceneIndex);
+      loadScene();
+    } else {
+      bossImg.style.display = "none";
+      typeText(
+        `Congratulations, ${player.name}! You have defeated the Demon CEO, freed the reapers, and restored balance to the supernatural world!`
+      );
+    }
+  });
 }
-
