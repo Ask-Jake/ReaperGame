@@ -13,7 +13,9 @@ const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
 // ✅ Global scene index
-window.curSceneIndex = 0;
+if (typeof window.curSceneIndex === "undefined") {
+  window.curSceneIndex = 0;
+}
 
 let player = { name: "", health: 100, armor: 0, strength: 10 };
 let enemy = null;
@@ -228,9 +230,8 @@ function doAction(act) {
 
   updateStats();
 
-  // ✅ Check if enemy died immediately
   if (enemy.health <= 0) {
-    console.log("Enemy defeated, calling endBattle()");
+    console.log("Enemy defeated → calling endBattle()");
     options.innerHTML = "";
     endBattle(text);
     return;
@@ -240,7 +241,7 @@ function doAction(act) {
 }
 
 function enemyTurn(prevText) {
-  if (enemy.health <= 0) return; // Enemy already dead, no attack
+  if (enemy.health <= 0) return;
 
   const dmg = Math.floor(Math.random() * enemy.strength) + 3;
   const armorAbsorb = Math.min(dmg, player.armor);
@@ -251,7 +252,7 @@ function enemyTurn(prevText) {
   updateStats();
 
   if (enemy.health <= 0) {
-    console.log("Enemy defeated during enemyTurn, calling endBattle()");
+    console.log("Enemy defeated in enemyTurn → calling endBattle()");
     options.innerHTML = "";
     endBattle(prevText);
     return;
@@ -273,16 +274,15 @@ function checkPlayerDeath() {
 }
 
 function endBattle(prevText) {
-  console.log("endBattle() called. Current scene index:", window.curSceneIndex);
+  console.log("endBattle() called → Current index:", window.curSceneIndex);
 
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
 
     if (window.curSceneIndex < scenes.length - 1) {
       setTimeout(() => {
-        // ✅ Force update explicitly
-        window.curSceneIndex = window.curSceneIndex + 1;
-        console.log("Scene index after increment:", window.curSceneIndex);
+        window.curSceneIndex = window.curSceneIndex + 1; // 🔹 Force increment
+        console.log("Incremented index →", window.curSceneIndex);
         loadScene();
       }, 3000);
     } else {
@@ -293,3 +293,4 @@ function endBattle(prevText) {
     }
   });
 }
+  
