@@ -285,21 +285,20 @@ function checkPlayerDeath() {
 
 // ✅ FINAL endBattle() with auto-transition
 function endBattle(prevText) {
-  console.log("endBattle() called. Current scene index:", curSceneIndex); // DEBUG
+  console.log("endBattle() called. Current scene index:", curSceneIndex);
 
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
-    console.log("typeText finished. Checking if there is another scene..."); // DEBUG
     options.innerHTML = "";
 
     if (curSceneIndex < scenes.length - 1) {
-      console.log("There IS another scene. Advancing in 3 seconds..."); // DEBUG
       setTimeout(() => {
-        curSceneIndex++;
-        console.log("Scene index incremented to:", curSceneIndex); // DEBUG
-        loadScene();
+        console.log("Incrementing scene index...");
+        curSceneIndex = curSceneIndex + 1; // ✅ Force update
+        console.log("New scene index:", curSceneIndex);
+
+        loadScene(); // ✅ Load next scene
       }, 3000);
     } else {
-      console.log("No more scenes. Showing final message."); // DEBUG
       bossImg.style.display = "none";
       typeText(
         `Congratulations, ${player.name}! You have defeated the Demon CEO, freed the reapers, and restored balance to the supernatural world!`
