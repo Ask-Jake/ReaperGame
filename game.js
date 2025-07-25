@@ -46,12 +46,11 @@ A feeling of malevolent power seems to suffuse the very air.`
   }
 ];
 
-// ✅ FINAL FIXED Typewriter
+// ✅ FIXED Typewriter
 function typeText(text, delay = 30, callback) {
   currentTypeId++;
   const myId = currentTypeId;
 
-  // Clear story but KEEP the skip button
   story.textContent = "";
   story.appendChild(skipBtn);
 
@@ -64,7 +63,6 @@ function typeText(text, delay = 30, callback) {
     if (myId !== currentTypeId) return;
 
     if (i < text.length) {
-      // Append character as a text node (no innerHTML changes)
       const charNode = document.createTextNode(text.charAt(i));
       story.insertBefore(charNode, skipBtn);
       i++;
@@ -78,12 +76,11 @@ function typeText(text, delay = 30, callback) {
   type();
 }
 
-// ✅ Skip function (now always works)
+// ✅ Skip button function
 function skipTyping() {
   if (skipBtn._skipTarget) {
     const { text, callback } = skipBtn._skipTarget;
     currentTypeId++;
-    // Replace all text at once, then re-add skip button
     story.textContent = text;
     story.appendChild(skipBtn);
     skipBtn.style.display = "none";
@@ -104,6 +101,7 @@ This violated the natural order of life and caused many of the reapers to want f
   typeText(introText);
 };
 
+// Start Game
 function startGame() {
   currentTypeId++;
   story.textContent = "";
@@ -114,6 +112,7 @@ function startGame() {
   loadScene();
 }
 
+// Load Scene
 function loadScene() {
   const scene = scenes[curSceneIndex];
   sceneImg.src = scene.img;
@@ -158,6 +157,7 @@ Yet you managed to land a few blows of your own.
   typeText(sceneNarrative, 30, showCombatOptions);
 }
 
+// Update Stats
 function updateStats() {
   healthEl.textContent = player.health;
   armorEl.textContent = player.armor;
@@ -165,6 +165,7 @@ function updateStats() {
   enemyHealthEl.textContent = enemy.health;
 }
 
+// Show Combat Options
 function showCombatOptions() {
   options.innerHTML = `
     <button onclick="doAction('armor')">Pick up Armor</button>
@@ -173,44 +174,36 @@ function showCombatOptions() {
   `;
 }
 
+// ✅ UPDATED doAction
 function doAction(act) {
   let text = "";
   const damage = Math.floor(Math.random() * player.strength) + 5;
 
   if (act === "armor") {
-    // ✅ Armor now gives +10
-    player.armor += 10;
+    player.armor += 10; // Armor now +10
     text = `${player.name} picks up armor (+10).`;
   } 
   else if (act === "potion") {
-    // ✅ Potion now heals +10
-    player.health = Math.min(player.health + 10, 100);
+    player.health = Math.min(player.health + 10, 100); // Potion heals +10
     text = `${player.name} uses a potion (+10 HP).`;
   } 
   else if (act === "fight") {
-    // ✅ Enemy HP now stops at 0 instead of going negative
-    enemy.health = Math.max(0, enemy.health - damage);
+    enemy.health = Math.max(0, enemy.health - damage); // Prevent negative HP
     text = `${player.name} hits ${enemy.name} for ${damage} damage.`;
   }
 
-  // ✅ Update player/enemy stats display
   updateStats();
 
-  // ✅ If not fighting, enemy attacks
   if (act !== "fight") {
     enemyTurn(text);
-  } 
-  // ✅ If enemy still alive, enemy attacks
-  else if (enemy.health > 0) {
+  } else if (enemy.health > 0) {
     enemyTurn(text);
-  } 
-  // ✅ If enemy dead (HP = 0), end battle
-  else {
-    endBattle(text);
+  } else {
+    endBattle(text); // Ends immediately when HP = 0
   }
 }
-}
 
+// Enemy Turn
 function enemyTurn(prevText) {
   const dmg = Math.floor(Math.random() * enemy.strength) + 3;
   const armorAbsorb = Math.min(dmg, player.armor);
@@ -220,24 +213,33 @@ function enemyTurn(prevText) {
   player.health -= healthDamage;
   updateStats();
 
-  typeText(`${prevText}\n${enemy.name} attacks! Damage: ${dmg} → Armor blocked: ${armorAbsorb}, HP lost: ${healthDamage}.`, showCombatOptions);
+  typeText(
+    `${prevText}\n${enemy.name} attacks! Damage: ${dmg} → Armor blocked: ${armorAbsorb}, HP lost: ${healthDamage}.`,
+    showCombatOptions
+  );
+
   checkPlayerDeath();
 }
 
+// Player Death
 function checkPlayerDeath() {
   if (player.health <= 0) {
     typeText(`You have been defeated by ${enemy.name}. Game Over.`);
-    options.innerHTML = '';
+    options.innerHTML = "";
   }
 }
 
+// End Battle
 function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
-    options.innerHTML = '';
+    options.innerHTML = "";
     if (curSceneIndex < scenes.length - 1) {
-      const btn = document.createElement('button');
-      btn.textContent = 'Continue';
-      btn.onclick = () => { curSceneIndex++; loadScene(); };
+      const btn = document.createElement("button");
+      btn.textContent = "Continue";
+      btn.onclick = () => {
+        curSceneIndex++;
+        loadScene();
+      };
       options.appendChild(btn);
     } else {
       typeText("Congratulations! You've defeated all the demons and restored balance!");
