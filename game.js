@@ -126,8 +126,13 @@ function loadScene() {
   console.log("Loading scene index:", window.curSceneIndex);
 
   const scene = scenes[window.curSceneIndex];
+  console.log("Scene data:", scene); // DEBUG
 
   sceneImg.src = scene.img;
+  bossImg.src = scene.enemy.img;
+
+  console.log("Scene image set to:", scene.img);
+  console.log("Boss image set to:", scene.enemy.img);
 
   try {
     bgMusic.src = scene.music;
@@ -135,6 +140,13 @@ function loadScene() {
   } catch (e) {
     console.warn("Audio load/play error:", e);
   }
+
+  enemy = { ...scene.enemy };
+  updateStats();
+
+  typeText(scene.description, 30, showCombatOptions);
+}
+
 
   enemy = { ...scene.enemy };
   updateStats();
