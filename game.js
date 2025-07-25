@@ -12,7 +12,7 @@ const bgMusic = document.getElementById("bg-music");
 const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
-// ✅ Global scene index
+// ✅ Only initialize once
 if (typeof window.curSceneIndex === "undefined") {
   window.curSceneIndex = 0;
 }
@@ -57,7 +57,7 @@ The air crackles with nether energy, and screams reverberate through the torture
   }
 ];
 
-// ✅ Typewriter
+// ✅ Typewriter effect
 function typeText(text, delay = 30, callback) {
   currentTypeId++;
   const myId = currentTypeId;
@@ -96,7 +96,7 @@ function skipTyping() {
 
 window.onload = function () {
   const introText = `
-(Updated) The supernatural society was a place of fear and danger.
+The supernatural society was a place of fear and danger.
 It was filled with powerful and malevolent demons, dark magic,
 and a rigid hierarchy where the demons held absolute power over the grim reapers.
 The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.
@@ -123,6 +123,8 @@ function startGame() {
 }
 
 function loadScene() {
+  console.log("Loading scene index:", window.curSceneIndex);
+
   const scene = scenes[window.curSceneIndex];
 
   sceneImg.src = scene.img;
@@ -252,7 +254,7 @@ function enemyTurn(prevText) {
   updateStats();
 
   if (enemy.health <= 0) {
-    console.log("Enemy defeated in enemyTurn → calling endBattle()");
+    console.log("Enemy defeated during enemyTurn → calling endBattle()");
     options.innerHTML = "";
     endBattle(prevText);
     return;
@@ -281,8 +283,8 @@ function endBattle(prevText) {
 
     if (window.curSceneIndex < scenes.length - 1) {
       setTimeout(() => {
-        window.curSceneIndex = window.curSceneIndex + 1; // 🔹 Force increment
-        console.log("Incremented index →", window.curSceneIndex);
+        window.curSceneIndex = window.curSceneIndex + 1;
+        console.log("Scene index after increment:", window.curSceneIndex);
         loadScene();
       }, 3000);
     } else {
@@ -293,4 +295,3 @@ function endBattle(prevText) {
     }
   });
 }
-  
