@@ -1,4 +1,3 @@
-/* General layout */
 body {
   display: flex;
   flex-direction: column;
@@ -10,7 +9,6 @@ body {
   padding: 0;
 }
 
-/* Title */
 h1 {
   font-size: 2.5em;
   color: #ff6666;
@@ -19,7 +17,6 @@ h1 {
   font-family: 'UnifrakturCook', cursive;
 }
 
-/* Input area */
 #input-container {
   margin: 20px 0;
 }
@@ -33,7 +30,6 @@ h1 {
   font-family: 'VT323', monospace;
 }
 
-/* Buttons */
 button {
   padding: 10px 20px;
   font-size: 1.1em;
@@ -51,7 +47,6 @@ button:hover {
   background-color: #ff1a1a;
 }
 
-/* ✅ Scene + Boss Container */
 #scene-container {
   display: flex;
   justify-content: center;
@@ -60,24 +55,25 @@ button:hover {
   margin: 20px auto;
 }
 
-/* Scene background image */
 #scene-img {
   max-width: 600px;
   border: 3px solid #ff0000;
   border-radius: 10px;
   box-shadow: 0 0 20px #800000;
+  opacity: 1;
+  transition: opacity 1s ease;
 }
 
-/* Boss image styling */
 #boss-img {
   display: none;
   max-width: 300px;
   border: 3px solid #ff0000;
   border-radius: 10px;
   box-shadow: 0 0 15px red;
+  opacity: 1;
+  transition: opacity 1s ease;
 }
 
-/* Intro image */
 #intro-img {
   max-width: 100%;
   height: auto;
@@ -86,7 +82,6 @@ button:hover {
   box-shadow: 0 0 30px #444;
 }
 
-/* Story box */
 #story {
   width: 60%;
   margin: 30px auto;
@@ -102,7 +97,6 @@ button:hover {
   position: relative;
 }
 
-/* ✅ Skip button */
 #skip-button {
   display: none;
   position: absolute;
@@ -124,7 +118,6 @@ button:hover {
   background-color: #990000;
 }
 
-/* Stats display */
 #stats {
   margin-top: 20px;
   font-size: 1.1em;
@@ -134,26 +127,14 @@ button:hover {
   margin: 5px 0;
 }
 
-/* Fight options */
 #options {
   margin-top: 20px;
 }
 
-/* ✅ Fade transition for scene & boss images */
-.fade-out {
-  opacity: 0;
-  transition: opacity 1s ease;
-}
+.fade-out { opacity: 0; }
+.fade-in { opacity: 1; }
 
-.fade-in {
-  opacity: 1;
-  transition: opacity 1s ease;
-}
-
-/* Hide game elements until game starts */
 #scene-container,
 #stats,
-#options {
-  display: none;
-}
+#options { display: none; }
 
