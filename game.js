@@ -12,9 +12,11 @@ const bgMusic = document.getElementById("bg-music");
 const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
+// ✅ Global scene index
+window.curSceneIndex = 0;
+
 let player = { name: "", health: 100, armor: 0, strength: 10 };
 let enemy = null;
-let curSceneIndex = 0;
 let currentTypeId = 0;
 
 const scenes = [
@@ -53,7 +55,7 @@ The air crackles with nether energy, and screams reverberate through the torture
   }
 ];
 
-// ✅ Typewriter effect
+// ✅ Typewriter
 function typeText(text, delay = 30, callback) {
   currentTypeId++;
   const myId = currentTypeId;
@@ -118,49 +120,28 @@ function startGame() {
   loadScene();
 }
 
-// ✅ Smooth fade transition
-function transitionScene(callback) {
-  sceneImg.classList.add("fade-out");
-  bossImg.classList.add("fade-out");
-
-  setTimeout(() => {
-    callback();
-    sceneImg.classList.remove("fade-out");
-    bossImg.classList.remove("fade-out");
-    sceneImg.classList.add("fade-in");
-    bossImg.classList.add("fade-in");
-
-    setTimeout(() => {
-      sceneImg.classList.remove("fade-in");
-      bossImg.classList.remove("fade-in");
-    }, 1000);
-  }, 1000);
-}
-
-// ✅ Load Scene
 function loadScene() {
-  const scene = scenes[curSceneIndex];
+  const scene = scenes[window.curSceneIndex];
 
-  transitionScene(() => {
-    sceneImg.src = scene.img;
+  sceneImg.src = scene.img;
 
-try {
-  bgMusic.src = scene.music;
-  bgMusic.play().catch(err => console.warn("Audio play failed:", err));
-} catch (e) {
-  console.warn("Audio load/play error:", e);
-}
+  try {
+    bgMusic.src = scene.music;
+    bgMusic.play().catch(err => console.warn("Audio play failed:", err));
+  } catch (e) {
+    console.warn("Audio load/play error:", e);
+  }
 
-    enemy = { ...scene.enemy };
-    updateStats();
+  enemy = { ...scene.enemy };
+  updateStats();
 
-    bossImg.style.display = "block";
-    bossImg.src = scene.enemy.img;
+  bossImg.style.display = "block";
+  bossImg.src = scene.enemy.img;
 
-    let sceneNarrative = `${scene.description}\n\n`;
+  let sceneNarrative = `${scene.description}\n\n`;
 
-    if (scene.name === "Temple") {
-      sceneNarrative += `
+  if (scene.name === "Temple") {
+    sceneNarrative += `
 ${player.name} was the first to take a stand against the demons and challenge their authority.
 You've always been an outcast among the reapers, mocked and misunderstood for your vision of freedom.
 But deep down, you knew you were right.
@@ -180,10 +161,10 @@ I won't let you spread your darkness any longer.
 
 Demon Boss: Then come, reaper. But know I will not fall without a fight!
 `;
-    }
+  }
 
-    if (scene.name === "Forest") {
-      sceneNarrative += `
+  if (scene.name === "Forest") {
+    sceneNarrative += `
 After defeating the Demon Boss, ${player.name} ventures deeper into the Forest of Eternal Torment.
 Suddenly, a hulking figure steps forward — the Demon Supervisor.
 
@@ -195,10 +176,10 @@ Demon Supervisor: "Bold words, little reaper. Let’s see if you can survive my 
 
 The Demon Supervisor raises his fiery axe, and the second battle begins!
 `;
-    }
+  }
 
-    if (scene.name === "Metropolis") {
-      sceneNarrative += `
+  if (scene.name === "Metropolis") {
+    sceneNarrative += `
 After cutting through the forest, ${player.name} finally reaches the heart of the infernal metropolis.
 The Demon CEO waits at the top of a tower of obsidian and flame.
 
@@ -208,10 +189,9 @@ ${player.name}: "This ends today. Your empire of fear is finished."
 
 Demon CEO: "We’ll see about that. Let the final battle begin!"
 `;
-    }
+  }
 
-    typeText(sceneNarrative, 30, showCombatOptions);
-  });
+  typeText(sceneNarrative, 30, showCombatOptions);
 }
 
 function updateStats() {
@@ -229,7 +209,6 @@ function showCombatOptions() {
   `;
 }
 
-// ✅ FIXED doAction() so endBattle() always triggers
 function doAction(act) {
   if (enemy.health <= 0) return;
 
@@ -249,7 +228,6 @@ function doAction(act) {
 
   updateStats();
 
-  // ✅ Always check after applying damage
   if (enemy.health <= 0) {
     options.innerHTML = "";
     endBattle(text);
@@ -283,20 +261,16 @@ function checkPlayerDeath() {
   }
 }
 
-// ✅ FINAL endBattle() with auto-transition
+// ✅ Always updates global scene index
 function endBattle(prevText) {
-  console.log("endBattle() called. Current scene index:", curSceneIndex);
-
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
 
-    if (curSceneIndex < scenes.length - 1) {
+    if (window.curSceneIndex < scenes.length - 1) {
       setTimeout(() => {
-        console.log("Incrementing scene index...");
-        curSceneIndex = curSceneIndex + 1; // ✅ Force update
-        console.log("New scene index:", curSceneIndex);
-
-        loadScene(); // ✅ Load next scene
+        window.curSceneIndex++;
+        console.log("Scene index is now:", window.curSceneIndex);
+        loadScene();
       }, 3000);
     } else {
       bossImg.style.display = "none";
