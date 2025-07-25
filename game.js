@@ -96,7 +96,7 @@ function skipTyping() {
 
 window.onload = function () {
   const introText = `
-The supernatural society was a place of fear and danger.
+(Next) The supernatural society was a place of fear and danger.
 It was filled with powerful and malevolent demons, dark magic,
 and a rigid hierarchy where the demons held absolute power over the grim reapers.
 The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls before their time had come. 
