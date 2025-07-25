@@ -143,8 +143,13 @@ function loadScene() {
 
   transitionScene(() => {
     sceneImg.src = scene.img;
-    bgMusic.src = scene.music;
-    bgMusic.play();
+
+try {
+  bgMusic.src = scene.music;
+  bgMusic.play().catch(err => console.warn("Audio play failed:", err));
+} catch (e) {
+  console.warn("Audio load/play error:", e);
+}
 
     enemy = { ...scene.enemy };
     updateStats();
