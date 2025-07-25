@@ -12,8 +12,10 @@ const bgMusic = document.getElementById("bg-music");
 const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
-// ✅ Track current scene index
-let curSceneIndex = 0;
+// ✅ Ensure scene index always exists globally
+if (window.curSceneIndex === undefined) {
+  window.curSceneIndex = 0;
+}
 
 let player = { name: "", health: 100, armor: 0, strength: 10 };
 let enemy = null;
@@ -96,7 +98,7 @@ function skipTyping() {
 // ✅ Intro text
 window.onload = function () {
   const introText = `
-( Updated ) The supernatural society was a place of fear and danger.
+The supernatural society was a place of fear and danger.
 It was filled with powerful and malevolent demons, dark magic,
 and a rigid hierarchy where the demons held absolute power over the grim reapers.
 The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.
@@ -125,11 +127,11 @@ function startGame() {
 
 // ✅ Load Scene
 function loadScene() {
-  console.log("Loading scene index:", curSceneIndex);
+  console.log("Loading scene index:", window.curSceneIndex);
 
-  const scene = scenes[curSceneIndex];
+  const scene = scenes[window.curSceneIndex];
 
-  // ✅ Force image reload
+  // Force image reload
   sceneImg.src = scene.img + "?v=" + Date.now();
   bossImg.src = scene.enemy.img + "?v=" + Date.now();
   bossImg.style.display = "block";
@@ -225,14 +227,14 @@ function checkPlayerDeath() {
 
 // ✅ End Battle
 function endBattle(prevText) {
-  console.log("endBattle() called. Current scene index:", curSceneIndex);
+  console.log("endBattle() called. Current scene index:", window.curSceneIndex);
 
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
 
-    if (curSceneIndex < scenes.length - 1) {
-      curSceneIndex++;
-      console.log("Scene index incremented to:", curSceneIndex);
+    if (window.curSceneIndex < scenes.length - 1) {
+      window.curSceneIndex++;
+      console.log("Scene index incremented to:", window.curSceneIndex);
 
       setTimeout(() => {
         console.log("Loading new scene...");
