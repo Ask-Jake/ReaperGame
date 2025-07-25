@@ -174,18 +174,41 @@ function showCombatOptions() {
 }
 
 function doAction(act) {
-  let text = '';
+  let text = "";
   const damage = Math.floor(Math.random() * player.strength) + 5;
 
-  if (act === 'armor') { player.armor += 5; text = `${player.name} picks up armor (+5).`; }
-  else if (act === 'potion') { player.health = Math.min(player.health + 20, 100); text = `${player.name} uses a potion (+20 HP).`; }
-  else if (act === 'fight') { enemy.health -= damage; text = `${player.name} hits ${enemy.name} for ${damage} damage.`; }
+  if (act === "armor") {
+    // ✅ Armor now gives +10
+    player.armor += 10;
+    text = `${player.name} picks up armor (+10).`;
+  } 
+  else if (act === "potion") {
+    // ✅ Potion now heals +10
+    player.health = Math.min(player.health + 10, 100);
+    text = `${player.name} uses a potion (+10 HP).`;
+  } 
+  else if (act === "fight") {
+    // ✅ Enemy HP now stops at 0 instead of going negative
+    enemy.health = Math.max(0, enemy.health - damage);
+    text = `${player.name} hits ${enemy.name} for ${damage} damage.`;
+  }
 
+  // ✅ Update player/enemy stats display
   updateStats();
 
-  if (act !== 'fight') enemyTurn(text);
-  else if (enemy.health > 0) enemyTurn(text);
-  else endBattle(text);
+  // ✅ If not fighting, enemy attacks
+  if (act !== "fight") {
+    enemyTurn(text);
+  } 
+  // ✅ If enemy still alive, enemy attacks
+  else if (enemy.health > 0) {
+    enemyTurn(text);
+  } 
+  // ✅ If enemy dead (HP = 0), end battle
+  else {
+    endBattle(text);
+  }
+}
 }
 
 function enemyTurn(prevText) {
