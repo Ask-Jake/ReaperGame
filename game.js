@@ -227,14 +227,19 @@ function checkPlayerDeath() {
 
 // ✅ FIXED End Battle
 function endBattle(prevText) {
+  console.log("endBattle() called. Current scene index:", window.curSceneIndex);
+
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
 
     if (window.curSceneIndex < scenes.length - 1) {
       window.curSceneIndex++;
+      console.log("Scene index incremented to:", window.curSceneIndex);
 
-      // ✅ Add delay so transition is visible
-      setTimeout(() => loadScene(), 1000);
+      setTimeout(() => {
+        console.log("Calling loadScene() for new scene...");
+        loadScene();
+      }, 1000);
 
     } else {
       bossImg.style.display = "none";
@@ -244,3 +249,4 @@ function endBattle(prevText) {
     }
   });
 }
+
