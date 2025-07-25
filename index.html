@@ -19,16 +19,16 @@
 
   <!-- Scene + Boss Container -->
   <div id="scene-container">
-    <img id="scene-img" src="" alt="Scene Image" />
+    <img id="scene-img" src="" alt="Scene Image" class="fade-in" />
     <img id="boss-img" src="" alt="Boss Image" />
   </div>
 
-  <!-- Story Area -->
+  <!-- Story Box -->
   <div id="story">
     <button id="skip-button" onclick="skipTyping()" style="display:none;">Skip</button>
   </div>
 
-  <!-- Player and Enemy Stats -->
+  <!-- Stats -->
   <div id="stats">
     <p><strong>Player HP:</strong> <span id="health">100</span></p>
     <p><strong>Armor:</strong> <span id="armor">0</span></p>
@@ -39,7 +39,6 @@
   <!-- Fight Options -->
   <div id="options"></div>
 
-  <!-- Background Music -->
   <audio id="bg-music" loop></audio>
 
   <script src="game.js"></script>
