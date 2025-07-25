@@ -228,7 +228,9 @@ function doAction(act) {
 
   updateStats();
 
+  // ✅ Check if enemy died immediately
   if (enemy.health <= 0) {
+    console.log("Enemy defeated, calling endBattle()");
     options.innerHTML = "";
     endBattle(text);
     return;
@@ -238,6 +240,8 @@ function doAction(act) {
 }
 
 function enemyTurn(prevText) {
+  if (enemy.health <= 0) return; // Enemy already dead
+
   const dmg = Math.floor(Math.random() * enemy.strength) + 3;
   const armorAbsorb = Math.min(dmg, player.armor);
   const healthDamage = dmg - armorAbsorb;
@@ -245,6 +249,54 @@ function enemyTurn(prevText) {
   player.armor -= armorAbsorb;
   player.health -= healthDamage;
   updateStats();
+
+  // ✅ Check again if enemy died from counterattack (futureproofing)
+  if (enemy.health <= 0) {
+    console.log("Enemy defeated during enemyTurn, calling endBattle()");
+    options.innerHTML = "";
+    endBattle(prevText);
+    return;
+  }
+
+  typeText(
+    `${prevText}\n${enemy.name} attacks! Damage: ${dmg} → Armor blocked: ${armorAbsorb}, HP lost: ${healthDamage}.`,
+    showCombatOptions
+  );
+
+  checkPlayerDeath();
+}
+
+  updateStats();
+
+  // ✅ Check if enemy died immediately
+  if (enemy.health <= 0) {
+    console.log("Enemy defeated, calling endBattle()");
+    options.innerHTML = "";
+    endBattle(text);
+    return;
+  }
+
+  enemyTurn(text);
+}
+
+function enemyTurn(prevText) {
+  if (enemy.health <= 0) return; // Enemy already dead
+
+  const dmg = Math.floor(Math.random() * enemy.strength) + 3;
+  const armorAbsorb = Math.min(dmg, player.armor);
+  const healthDamage = dmg - armorAbsorb;
+
+  player.armor -= armorAbsorb;
+  player.health -= healthDamage;
+  updateStats();
+
+  // ✅ Check again if enemy died from counterattack (futureproofing)
+  if (enemy.health <= 0) {
+    console.log("Enemy defeated during enemyTurn, calling endBattle()");
+    options.innerHTML = "";
+    endBattle(prevText);
+    return;
+  }
 
   typeText(
     `${prevText}\n${enemy.name} attacks! Damage: ${dmg} → Armor blocked: ${armorAbsorb}, HP lost: ${healthDamage}.`,
