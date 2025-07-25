@@ -16,7 +16,6 @@ let enemy = null;
 let curSceneIndex = 0;
 let currentTypeId = 0;
 
-// Scenes
 const scenes = [
   {
     name: "Temple",
@@ -24,7 +23,7 @@ const scenes = [
     music: "temple.mp3",
     enemy: { name: "Demon Boss", health: 50, strength: 8 },
     description: `SCENE 1 – TEMPLE:
-You are walking through the foreboding temple in the deepest depths of Hell.
+The camera pans over a foreboding temple in the depths of Hell.
 The walls are made of charred obsidian, and glowing red symbols burn into the stone.
 Flames flicker in braziers, casting macabre shadows across broken statues of demonic figures.
 The air is thick with sulfuric smoke, and the only sounds are distant screams of damned souls echoing through the dark halls.
@@ -35,22 +34,29 @@ A feeling of malevolent power seems to suffuse the very air.`
     img: "forest.png",
     music: "forest.mp3",
     enemy: { name: "Demon Supervisor", health: 80, strength: 12 },
-    description: "A misty forest full of corrupted creatures and twisted trees..."
+    description: `SCENE 2 – FOREST:
+The camera traverses through a twisted forest, the trees resembling gnarled fingers reaching toward the ominous sky.
+The red glow of the inferno illuminates the branches, casting an eerie aura over the surroundings.
+The ground is scorched and barren, emitting heat like burning coals.
+Malicious spirits materialize and vanish in flashes of flame, their shrieks echoing in the infernal air.`
   },
   {
     name: "Metropolis",
     img: "city.png",
     music: "city.mp3",
     enemy: { name: "Demon CEO", health: 150, strength: 20 },
-    description: "A towering city of infernal architecture, dominated by greed and control..."
+    description: `FINAL SCENE 3 – METROPOLIS:
+A sprawling infernal metropolis stretches endlessly before you, jagged spires stabbing the dark sky.
+Flames flicker and blaze, illuminating the blackened streets.
+Demons and fiends roam freely, their glowing eyes fixed on you with malice.
+The air crackles with nether energy, and the screams of the damned echo through the city.`
   }
 ];
 
-// ✅ FIXED Typewriter
+// ✅ Typewriter
 function typeText(text, delay = 30, callback) {
   currentTypeId++;
   const myId = currentTypeId;
-
   story.textContent = "";
   story.appendChild(skipBtn);
 
@@ -58,10 +64,8 @@ function typeText(text, delay = 30, callback) {
   skipBtn._skipTarget = { text, callback };
 
   let i = 0;
-
   function type() {
     if (myId !== currentTypeId) return;
-
     if (i < text.length) {
       const charNode = document.createTextNode(text.charAt(i));
       story.insertBefore(charNode, skipBtn);
@@ -72,11 +76,9 @@ function typeText(text, delay = 30, callback) {
       if (callback) callback();
     }
   }
-
   type();
 }
 
-// ✅ Skip button function
 function skipTyping() {
   if (skipBtn._skipTarget) {
     const { text, callback } = skipBtn._skipTarget;
@@ -88,20 +90,19 @@ function skipTyping() {
   }
 }
 
-// Intro
 window.onload = function () {
   const introText = `
 The supernatural society was a place of fear and danger.
 It was filled with powerful and malevolent demons, dark magic,
 and a rigid hierarchy where the demons held absolute power over the grim reapers.
 The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.
-This violated the natural order of life and caused many of the reapers to want freedom and to fight for it, but only one would act.
+This violated the natural order of life, and many reapers longed for freedom.
 
+One reaper dared to resist... and their story begins now.
 `;
   typeText(introText);
 };
 
-// Start Game
 function startGame() {
   currentTypeId++;
   story.textContent = "";
@@ -112,7 +113,7 @@ function startGame() {
   loadScene();
 }
 
-// Load Scene
+// ✅ Full dialogue for all three boss scenes
 function loadScene() {
   const scene = scenes[curSceneIndex];
   sceneImg.src = scene.img;
@@ -122,42 +123,75 @@ function loadScene() {
   enemy = { ...scene.enemy };
   updateStats();
 
-  const sceneNarrative = `
-${scene.description}
+  let sceneNarrative = `${scene.description}\n\n`;
 
+  if (scene.name === "Temple") {
+    sceneNarrative += `
 ${player.name} was the first to take a stand against the demons and challenge their authority.
-You have always been an outcast amongst the reapers, with none of them really understanding
-or too scared to try and understand your wish for freedom and going against the will of the demons. You were teased and mocked by the other reapers who did not join your cause,
-but you knew deep down that you were right and were determined to make a stand.
+You've always been an outcast among the reapers, mocked and misunderstood for your vision of freedom.
+But deep down, you knew you were right.
 
-They began a rebellion, travelling to different parts of the demon society
-and recruiting those who wanted freedom from the demons' cruel rule. They fought many battles,
-often sustaining heavy losses, but eventually their numbers grew, and they became a powerful force.
+You began a rebellion, traveling to different regions, recruiting allies
+who sought to escape the cruel rule of demons.
+Through battles and bloodshed, your army grew into a powerful force.
 
-This powerful force grew in numbers until the demon CEO had no choice but to notice it. He sent down his most trustworthy apprentice
-to express the news to the demon boss. Once hearing of this, he amassed a group of
-lower-level demons and headed to the demonic temple where he knew he would find ${player.name}.
+Eventually, the Demon CEO took notice. He dispatched his apprentice to alert the Demon Boss,
+who in turn rallied his forces and headed for the temple to destroy you himself.
 
-Once the demon boss arrived, he was met with a yell from behind him right before he entered the temple. The first fight between the Grim Reaper and the Demon Boss began with the Grim Reaper summoning his scythe and the Demon Boss laughing at the challenge.
+Before he could enter the temple, a roar erupted behind him — and your first clash began.
 
-${player.name}: Demon Boss, your time has come. You have caused too much suffering and chaos amongst the living. It's time for you to pay the price.
+${player.name}: Demon Boss, your time has come. You have caused too much suffering. It ends now.
 
-Demon Boss: Ha-ha, Grim Reaper, you always were a self-righteous fool. Have you ever stopped to consider what it means to be a demon? To revel in the pain and suffering of others?
+Demon Boss: Ha — Grim Reaper, you have always been a self-righteous fool.
+Have you ever considered that demons revel in the suffering you abhor?
 
-${player.name}: I understand the power that comes with our roles, but I also understand the responsibility that comes with it. I will not let you continue to spread darkness in the world.
+${player.name}: I understand our power. But I also understand the responsibility that comes with it.
+I won't let you spread your darkness any longer.
 
-Demon Boss: You can try, ${player.name}, but you know I won't go down without a fight.
+Demon Boss: Then come, reaper. But know I will not fall without a fight.
 
-The Reaper was steadfast and confident in his mission.
-The Demon Boss began to attack with swipes of his claws,
-but the Grim Reaper was able to block each attack with his scythe—except one—
-Yet you managed to land a few blows of your own.
+The Demon Boss lashes out with razor-sharp claws. You block with your scythe,
+blades clashing in bursts of sparks. You land a few hits — but so does he.
+The battle for the supernatural world begins now.
 `;
+  }
+
+  if (scene.name === "Forest") {
+    sceneNarrative += `
+After defeating the Demon Boss, ${player.name} ventures deeper into the Forest of Eternal Torment.
+
+The twisted trees close in around you, their gnarled branches like skeletal claws reaching for your soul.
+The ground is scorched and littered with bones, glowing eyes watching from the shadows.
+
+Suddenly, a hulking figure steps forward — the Demon Supervisor.
+His horns are jagged and black, and his molten-red eyes lock onto you with rage.
+
+Demon Supervisor: "So... you defeated my underling. But your rebellion ends here."
+
+${player.name}: "Your reign of terror will end just like his. This forest will be free."
+
+Demon Supervisor: "Bold words, little reaper. Let’s see if you can survive my wrath!"
+
+The Demon Supervisor raises his fiery axe, and the second battle begins.
+`;
+  }
+
+  if (scene.name === "Metropolis") {
+    sceneNarrative += `
+After cutting through the forest, ${player.name} finally reaches the heart of the infernal metropolis.
+The Demon CEO waits at the top of a tower of obsidian and flame, his presence suffocating the very air.
+
+Demon CEO: "You've come far, reaper. But this is where your rebellion dies."
+
+${player.name}: "This ends today. Your empire of fear is finished."
+
+Demon CEO: "We’ll see about that. Let the final battle begin!"
+`;
+  }
 
   typeText(sceneNarrative, 30, showCombatOptions);
 }
 
-// Update Stats
 function updateStats() {
   healthEl.textContent = player.health;
   armorEl.textContent = player.armor;
@@ -165,7 +199,6 @@ function updateStats() {
   enemyHealthEl.textContent = enemy.health;
 }
 
-// Show Combat Options
 function showCombatOptions() {
   options.innerHTML = `
     <button onclick="doAction('armor')">Pick up Armor</button>
@@ -174,36 +207,39 @@ function showCombatOptions() {
   `;
 }
 
-// ✅ UPDATED doAction
+// ✅ Mechanics w/ armor +10, potion +10, no negative HP
 function doAction(act) {
+  if (enemy.health <= 0) return;
+
   let text = "";
   const damage = Math.floor(Math.random() * player.strength) + 5;
 
   if (act === "armor") {
-    player.armor += 10; // Armor now +10
+    player.armor += 10;
     text = `${player.name} picks up armor (+10).`;
-  } 
-  else if (act === "potion") {
-    player.health = Math.min(player.health + 10, 100); // Potion heals +10
+  } else if (act === "potion") {
+    player.health = Math.min(player.health + 10, 100);
     text = `${player.name} uses a potion (+10 HP).`;
-  } 
-  else if (act === "fight") {
-    enemy.health = Math.max(0, enemy.health - damage); // Prevent negative HP
+  } else if (act === "fight") {
+    enemy.health = Math.max(0, enemy.health - damage);
     text = `${player.name} hits ${enemy.name} for ${damage} damage.`;
   }
 
   updateStats();
 
+  if (enemy.health <= 0) {
+    options.innerHTML = "";
+    endBattle(text);
+    return;
+  }
+
   if (act !== "fight") {
     enemyTurn(text);
-  } else if (enemy.health > 0) {
-    enemyTurn(text);
   } else {
-    endBattle(text); // Ends immediately when HP = 0
+    enemyTurn(text);
   }
 }
 
-// Enemy Turn
 function enemyTurn(prevText) {
   const dmg = Math.floor(Math.random() * enemy.strength) + 3;
   const armorAbsorb = Math.min(dmg, player.armor);
@@ -221,7 +257,6 @@ function enemyTurn(prevText) {
   checkPlayerDeath();
 }
 
-// Player Death
 function checkPlayerDeath() {
   if (player.health <= 0) {
     typeText(`You have been defeated by ${enemy.name}. Game Over.`);
@@ -229,7 +264,6 @@ function checkPlayerDeath() {
   }
 }
 
-// End Battle
 function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
@@ -242,7 +276,9 @@ function endBattle(prevText) {
       };
       options.appendChild(btn);
     } else {
-      typeText("Congratulations! You've defeated all the demons and restored balance!");
+      typeText(
+        `Congratulations, ${player.name}! You have defeated the Demon CEO, freed the reapers, and restored balance to the supernatural world!`
+      );
     }
   });
 }
