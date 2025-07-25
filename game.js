@@ -11,51 +11,44 @@ const bgMusic = document.getElementById("bg-music");
 const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
-if (typeof window.curSceneIndex === "undefined") window.curSceneIndex = 0;
+if (typeof window.curSceneIndex === "undefined") {
+  window.curSceneIndex = 0;
+}
 
 let player = { name: "", health: 100, armor: 0, strength: 10 };
 let enemy = null;
 let currentTypeId = 0;
 
+// Scenes
 const scenes = [
   {
     name: "Temple",
-    img: "temple.png",
+    img: "scene1-temple.png",
     music: "temple.mp3",
     enemy: { name: "Demon Boss", health: 50, strength: 8, img: "Demonboss.png" },
-    description: `SCENE 1 – TEMPLE:\nThe camera pans over a foreboding temple in the depths of Hell.\nThe walls are made of charred obsidian, and glowing red symbols burn into the stone.\nFlames flicker in braziers, casting macabre shadows across broken statues of demonic figures.\nThe air is thick with sulfuric smoke, and the only sounds are distant screams of damned souls echoing through the dark halls.\nA feeling of malevolent power seems to suffuse the very air.`,
-    dialogue: [
-      "Demon Boss: Ha — Grim Reaper, you have always been a self-righteous fool.",
-      "Grim Reaper: Demon Boss, your time has come. It ends now.",
-      "Demon Boss: Then come, reaper. But know I will not fall without a fight."
-    ]
+    description: `SCENE 1 – TEMPLE:
+The camera pans over a foreboding temple in the depths of Hell...
+The battle for the supernatural world begins now.`
   },
   {
     name: "Forest",
-    img: "forest.png",
+    img: "scene2-forest.png",
     music: "forest.mp3",
     enemy: { name: "Demon Supervisor", health: 80, strength: 12, img: "demonSupervisor.png" },
-    description: `SCENE 2 – FOREST:\nThe camera traverses through a twisted forest, the trees resembling gnarled fingers reaching toward the ominous sky.\nThe red glow of the inferno illuminates the branches, casting an eerie aura over the surroundings.\nThe ground is scorched and barren, emitting heat like burning coals.\nMalicious spirits materialize and vanish in flashes of flame, their shrieks echoing in the infernal air.`,
-    dialogue: [
-      "Demon Supervisor: You made it this far, but you won’t defeat me!",
-      "Grim Reaper: I’ve defeated worse than you. Your reign ends here.",
-      "Demon Supervisor: Then face me, reaper!"
-    ]
+    description: `SCENE 2 – FOREST:
+A twisted forest of gnarled trees illuminated by the red glow of Hell.`
   },
   {
     name: "Metropolis",
-    img: "city.png",
+    img: "scene3-city.png",
     music: "city.mp3",
     enemy: { name: "Demon CEO", health: 150, strength: 20, img: "demonCEO.png" },
-    description: `FINAL SCENE 3 – METROPOLIS:\nA sprawling infernal metropolis stretches endlessly before you, jagged spires stabbing the dark sky.\nFiery rivers cut through streets lined with twisted buildings, each filled with demonic figures whispering and plotting.\nThe air crackles with nether energy, and screams reverberate through the tortured landscape.`,
-    dialogue: [
-      "Demon CEO: You dare challenge me, the ruler of this realm?",
-      "Grim Reaper: I fight for freedom. Your tyranny ends now!",
-      "Demon CEO: Then perish, reaper!"
-    ]
+    description: `FINAL SCENE 3 – METROPOLIS:
+A sprawling infernal city with jagged spires and fiery rivers.`
   }
 ];
 
+// Typewriter
 function typeText(text, delay = 30, callback) {
   currentTypeId++;
   const myId = currentTypeId;
@@ -65,7 +58,7 @@ function typeText(text, delay = 30, callback) {
   skipBtn._skipTarget = { text, callback };
 
   let i = 0;
-  (function type() {
+  function type() {
     if (myId !== currentTypeId) return;
     if (i < text.length) {
       story.insertBefore(document.createTextNode(text.charAt(i)), skipBtn);
@@ -75,32 +68,78 @@ function typeText(text, delay = 30, callback) {
       skipBtn.style.display = "none";
       if (callback) callback();
     }
-  })();
+  }
+  type();
 }
 
 function skipTyping() {
-  if (!skipBtn._skipTarget) return;
-  const { text, callback } = skipBtn._skipTarget;
-  currentTypeId++;
-  story.textContent = text;
-  story.appendChild(skipBtn);
-  skipBtn.style.display = "none";
-  if (callback) callback();
+  if (skipBtn._skipTarget) {
+    const { text, callback } = skipBtn._skipTarget;
+    currentTypeId++;
+    story.textContent = text;
+    story.appendChild(skipBtn);
+    skipBtn.style.display = "none";
+    if (callback) callback();
+  }
 }
 
-window.onload = () => {
-  const introText = `The supernatural society was a place of fear and danger...\nOne reaper dared to resist... and their story begins now.`;
-  typeText(introText);
+// ✅ Show SHORT intro when page loads
+window.onload = function () {
+  const shortIntro = `
+The supernatural society was a place of fear and danger.
+It was filled with powerful and malevolent demons, dark magic,
+and a rigid hierarchy where the demons held absolute power over the grim reapers.
+The grim reapers were forced to do the bidding of the demons,
+which included killing humans to reap their souls.
+
+One reaper dared to resist... and their story begins now.
+`;
+  typeText(shortIntro);
 };
 
+// ✅ Start Game
 function startGame() {
   player.name = input.value.trim() || "Reaper";
-  document.getElementById("input-container").style.display = "none";
-  introImg.style.display = "none";
 
-  document.getElementById("scene-container").style.display = "flex";
-  document.getElementById("stats").style.display = "block";
-  document.getElementById("options").style.display = "block";
+  // Hide intro image & input
+  introImg.style.display = "none";
+  document.getElementById("input-container").style.display = "none";
+
+  // Extended story BEFORE scene loads
+  const fullIntro = `
+${player.name} was the first to take a stand against the demons and challenge their authority.
+You've always been an outcast among the reapers, mocked and misunderstood for your vision of freedom.
+
+You began a rebellion, traveling to different regions, recruiting allies who sought freedom.
+Through battles and bloodshed, your army grew into a powerful force.
+
+Eventually, the Demon CEO took notice. He dispatched his apprentice to alert the Demon Boss,
+who rallied his forces and headed for the temple to destroy you himself.
+
+${player.name}: Demon Boss, your time has come. You have caused too much suffering. It ends now.
+
+Demon Boss: Ha — Grim Reaper, you have always been a self-righteous fool.
+Have you ever considered that demons revel in the suffering you abhor?
+
+${player.name}: I understand our power. But I also understand the responsibility that comes with it.
+I won't let you spread your darkness any longer.
+
+Demon Boss: Then come, reaper. But know I will not fall without a fight.
+
+The Demon Boss lashes out with razor-sharp claws. You block with your scythe,
+blades clashing in bursts of sparks. The battle for the supernatural world begins now.
+`;
+
+  typeText(fullIntro, 30, () => {
+    document.getElementById("scene-container").style.display = "flex";
+    document.getElementById("stats").style.display = "block";
+    document.getElementById("options").style.display = "block";
+    loadScene();
+  });
+}
+
+// ✅ Rest of the functions (loadScene, updateStats, doAction, enemyTurn, endBattle)
+// Use EXACTLY the same fixed versions from before (with fade-in/out and boss image display)
 
   loadScene();
 }
