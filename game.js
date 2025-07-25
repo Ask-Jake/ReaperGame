@@ -12,7 +12,7 @@ const bgMusic = document.getElementById("bg-music");
 const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
-// ✅ Track current scene index (no more resetting!)
+// ✅ Track current scene index
 let curSceneIndex = 0;
 
 let player = { name: "", health: 100, armor: 0, strength: 10 };
@@ -179,12 +179,14 @@ function doAction(act) {
     text = `${player.name} uses a potion (+10 HP).`;
   } else if (act === "fight") {
     enemy.health = Math.max(0, enemy.health - damage);
+    console.log("Enemy HP after attack:", enemy.health);
     text = `${player.name} hits ${enemy.name} for ${damage} damage.`;
   }
 
   updateStats();
 
   if (enemy.health <= 0) {
+    console.log("Enemy defeated → Calling endBattle()");
     options.innerHTML = "";
     endBattle(text);
     return;
@@ -221,7 +223,7 @@ function checkPlayerDeath() {
   }
 }
 
-// ✅ End Battle (Scene Transition Fix)
+// ✅ End Battle
 function endBattle(prevText) {
   console.log("endBattle() called. Current scene index:", curSceneIndex);
 
@@ -233,7 +235,7 @@ function endBattle(prevText) {
       console.log("Scene index incremented to:", curSceneIndex);
 
       setTimeout(() => {
-        console.log("Calling loadScene() for new scene...");
+        console.log("Loading new scene...");
         loadScene();
       }, 1000);
 
@@ -245,3 +247,4 @@ function endBattle(prevText) {
     }
   });
 }
+
