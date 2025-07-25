@@ -107,9 +107,16 @@ function startGame() {
   currentTypeId++;
   story.textContent = "";
   player.name = input.value.trim() || "Reaper";
+
+  // Hide intro
   document.getElementById("input-container").style.display = "none";
   introImg.style.display = "none";
-  sceneImg.style.display = "block";
+
+  // Show game UI
+  document.getElementById("scene-container").style.display = "flex";
+  document.getElementById("stats").style.display = "block";
+  document.getElementById("options").style.display = "block";
+
   loadScene();
 }
 
