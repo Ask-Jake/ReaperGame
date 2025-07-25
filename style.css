@@ -149,3 +149,11 @@ button:hover {
   opacity: 1;
   transition: opacity 1s ease;
 }
+
+/* Hide game elements until game starts */
+#scene-container,
+#stats,
+#options {
+  display: none;
+}
+
