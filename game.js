@@ -228,7 +228,7 @@ function doAction(act) {
 
   updateStats();
 
-  // ✅ Check if enemy died immediately after player's action
+  // ✅ Check if enemy died immediately
   if (enemy.health <= 0) {
     console.log("Enemy defeated, calling endBattle()");
     options.innerHTML = "";
@@ -250,7 +250,6 @@ function enemyTurn(prevText) {
   player.health -= healthDamage;
   updateStats();
 
-  // ✅ Check again if enemy died (future-proofing, if enemy had a recoil mechanic)
   if (enemy.health <= 0) {
     console.log("Enemy defeated during enemyTurn, calling endBattle()");
     options.innerHTML = "";
@@ -281,8 +280,9 @@ function endBattle(prevText) {
 
     if (window.curSceneIndex < scenes.length - 1) {
       setTimeout(() => {
-        window.curSceneIndex++;
-        console.log("Scene index is now:", window.curSceneIndex);
+        // ✅ Force update explicitly
+        window.curSceneIndex = window.curSceneIndex + 1;
+        console.log("Scene index after increment:", window.curSceneIndex);
         loadScene();
       }, 3000);
     } else {
@@ -293,6 +293,3 @@ function endBattle(prevText) {
     }
   });
 }
-
-
-
