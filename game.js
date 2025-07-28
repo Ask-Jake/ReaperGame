@@ -12,7 +12,14 @@ const bgMusic = document.getElementById("bg-music");
 const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
-// ✅ Ensure scene index always exists and is valid
+// Create Next Scene button dynamically
+const nextSceneBtn = document.createElement("button");
+nextSceneBtn.textContent = "Next Scene";
+nextSceneBtn.style.display = "none";
+nextSceneBtn.onclick = nextScene;
+document.body.appendChild(nextSceneBtn);
+
+// Ensure scene index exists and is valid
 if (typeof window.curSceneIndex === "undefined" || typeof window.curSceneIndex !== "number" || window.curSceneIndex < 0) {
   window.curSceneIndex = 0;
 }
@@ -28,33 +35,21 @@ const scenes = [
     img: "temple.png",
     music: "temple.mp3",
     enemy: { name: "Demon Boss", health: 50, strength: 8, img: "Demonboss.png" },
-    description: `SCENE 1 – TEMPLE:
-The camera pans over a foreboding temple in the depths of Hell.
-The walls are made of charred obsidian, and glowing red symbols burn into the stone.
-Flames flicker in braziers, casting macabre shadows across broken statues of demonic figures.
-The air is thick with sulfuric smoke, and the only sounds are distant screams of damned souls echoing through the dark halls.
-A feeling of malevolent power seems to suffuse the very air.`
+    description: `SCENE 1 – TEMPLE:\nThe camera pans over a foreboding temple in the depths of Hell.\nThe walls are made of charred obsidian, and glowing red symbols burn into the stone.\nFlames flicker in braziers, casting macabre shadows across broken statues of demonic figures.\nThe air is thick with sulfuric smoke, and the only sounds are distant screams of damned souls echoing through the dark halls.\nA feeling of malevolent power seems to suffuse the very air.`
   },
   {
     name: "Forest",
     img: "forest.png",
     music: "forest.mp3",
     enemy: { name: "Demon Supervisor", health: 80, strength: 12, img: "demonSupervisor.png" },
-    description: `SCENE 2 – FOREST:
-The camera traverses through a twisted forest, the trees resembling gnarled fingers reaching toward the ominous sky.
-The red glow of the inferno illuminates the branches, casting an eerie aura over the surroundings.
-The ground is scorched and barren, emitting heat like burning coals.
-Malicious spirits materialize and vanish in flashes of flame, their shrieks echoing in the infernal air.`
+    description: `SCENE 2 – FOREST:\nThe camera traverses through a twisted forest, the trees resembling gnarled fingers reaching toward the ominous sky.\nThe red glow of the inferno illuminates the branches, casting an eerie aura over the surroundings.\nThe ground is scorched and barren, emitting heat like burning coals.\nMalicious spirits materialize and vanish in flashes of flame, their shrieks echoing in the infernal air.`
   },
   {
     name: "Metropolis",
     img: "city.png",
     music: "city.mp3",
     enemy: { name: "Demon CEO", health: 150, strength: 20, img: "demonCEO.png" },
-    description: `FINAL SCENE 3 – METROPOLIS:
-A sprawling infernal metropolis stretches endlessly before you, jagged spires stabbing the dark sky.
-Fiery rivers cut through streets lined with twisted buildings, each filled with demonic figures whispering and plotting.
-The air crackles with nether energy, and screams reverberate through the tortured landscape.`
+    description: `FINAL SCENE 3 – METROPOLIS:\nA sprawling infernal metropolis stretches endlessly before you, jagged spires stabbing the dark sky.\nFiery rivers cut through streets lined with twisted buildings, each filled with demonic figures whispering and plotting.\nThe air crackles with nether energy, and screams reverberate through the tortured landscape.`
   }
 ];
 
@@ -95,14 +90,7 @@ function skipTyping() {
 }
 
 window.onload = function () {
-  const introText = `
-The supernatural society was a place of fear and danger.
-It was filled with powerful and malevolent demons, dark magic,
-and a rigid hierarchy where the demons held absolute power over the grim reapers.
-The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.
-This violated the natural order of life and caused many reapers to seek freedom.
-
-One reaper dared to resist... and their story begins now.`;
+  const introText = `\nThe supernatural society was a place of fear and danger.\nIt was filled with powerful and malevolent demons, dark magic,\nand a rigid hierarchy where the demons held absolute power over the grim reapers.\nThe grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.\nThis violated the natural order of life and caused many reapers to seek freedom.\n\nOne reaper dared to resist... and their story begins now.`;
   typeText(introText);
 };
 
@@ -123,7 +111,6 @@ function startGame() {
 
 function loadScene() {
   console.log("Attempting to load scene. Current index:", window.curSceneIndex);
-  console.log("Total scenes:", scenes.length);
 
   if (typeof window.curSceneIndex !== "number" || window.curSceneIndex < 0 || window.curSceneIndex >= scenes.length) {
     console.error("Invalid scene index! Resetting to 0.");
@@ -131,12 +118,7 @@ function loadScene() {
   }
 
   const scene = scenes[window.curSceneIndex];
-  if (!scene) {
-    console.error("Scene is undefined even after reset!");
-    return;
-  }
-
-  console.log("Loading scene:", scene.name);
+  if (!scene) return;
 
   sceneImg.src = scene.img + "?v=" + Date.now();
   bossImg.src = scene.enemy.img + "?v=" + Date.now();
@@ -151,7 +133,22 @@ function loadScene() {
 
   enemy = { ...scene.enemy };
   updateStats();
+
+  nextSceneBtn.style.display = "inline-block";
+
   typeText(scene.description + "\n\n", 30, showCombatOptions);
+}
+
+function nextScene() {
+  if (window.curSceneIndex < scenes.length - 1) {
+    window.curSceneIndex++;
+    console.log("Manual scene change. New index:", window.curSceneIndex);
+    loadScene();
+  } else {
+    bossImg.style.display = "none";
+    nextSceneBtn.style.display = "none";
+    typeText(`Congratulations, ${player.name}! You have completed all scenes.`);
+  }
 }
 
 function updateStats() {
@@ -233,6 +230,7 @@ function endBattle(prevText) {
       loadScene();
     } else {
       bossImg.style.display = "none";
+      nextSceneBtn.style.display = "none";
       typeText(`Congratulations, ${player.name}! You have defeated the Demon CEO, freed the reapers, and restored balance to the supernatural world!`);
     }
   });
