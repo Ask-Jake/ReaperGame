@@ -107,7 +107,7 @@ One reaper dared to resist... and their story begins now.
 
 function startGame() {
 
-  console.log("GAME.JS LOADED! curSceneIndex =", window.curSceneIndex,);
+  console.log("GAME.JS LOADED! sceneIndex =", scenes.length );
   currentTypeId++;
   story.textContent = "";
   player.name = input.value.trim() || "Reaper";
