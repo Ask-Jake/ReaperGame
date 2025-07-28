@@ -152,6 +152,7 @@ function showAttackChoices() {
     <button onclick="doAction('quick')">Quick Attack</button>
     <button onclick="doAction('heavy')">Heavy Attack</button>
     <button onclick="doAction('special')">Special Attack</button>
+    <button onclick="showCombatOptions()">Back</button>
   `;
 }
 
