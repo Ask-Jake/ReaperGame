@@ -12,9 +12,9 @@ const bgMusic = document.getElementById("bg-music");
 const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
-// Create Next Scene button dynamically
+// Create Continue Adventure button dynamically
 const nextSceneBtn = document.createElement("button");
-nextSceneBtn.textContent = "Next Scene";
+nextSceneBtn.textContent = "Continue Adventure";
 nextSceneBtn.style.display = "none";
 nextSceneBtn.onclick = nextScene;
 document.body.appendChild(nextSceneBtn);
@@ -30,26 +30,27 @@ let enemy = null;
 let currentTypeId = 0;
 
 const scenes = [
+  // same scenes as before
   {
     name: "Temple",
     img: "temple.png",
     music: "temple.mp3",
     enemy: { name: "Demon Boss", health: 50, strength: 8, img: "Demonboss.png" },
-    description: `SCENE 1 – TEMPLE:\nThe camera pans over a foreboding temple in the depths of Hell.\nThe walls are made of charred obsidian, and glowing red symbols burn into the stone.\nFlames flicker in braziers, casting macabre shadows across broken statues of demonic figures.\nThe air is thick with sulfuric smoke, and the only sounds are distant screams of damned souls echoing through the dark halls.\nA feeling of malevolent power seems to suffuse the very air.`
+    description: `SCENE 1 – TEMPLE:\nThe camera pans over a foreboding temple in the depths of Hell...`
   },
   {
     name: "Forest",
     img: "forest.png",
     music: "forest.mp3",
     enemy: { name: "Demon Supervisor", health: 80, strength: 12, img: "demonSupervisor.png" },
-    description: `SCENE 2 – FOREST:\nThe camera traverses through a twisted forest, the trees resembling gnarled fingers reaching toward the ominous sky.\nThe red glow of the inferno illuminates the branches, casting an eerie aura over the surroundings.\nThe ground is scorched and barren, emitting heat like burning coals.\nMalicious spirits materialize and vanish in flashes of flame, their shrieks echoing in the infernal air.`
+    description: `SCENE 2 – FOREST:\nThe camera traverses through a twisted forest...`
   },
   {
     name: "Metropolis",
     img: "city.png",
     music: "city.mp3",
     enemy: { name: "Demon CEO", health: 150, strength: 20, img: "demonCEO.png" },
-    description: `FINAL SCENE 3 – METROPOLIS:\nA sprawling infernal metropolis stretches endlessly before you, jagged spires stabbing the dark sky.\nFiery rivers cut through streets lined with twisted buildings, each filled with demonic figures whispering and plotting.\nThe air crackles with nether energy, and screams reverberate through the tortured landscape.`
+    description: `FINAL SCENE 3 – METROPOLIS:\nA sprawling infernal metropolis stretches endlessly before you...`
   }
 ];
 
@@ -90,7 +91,7 @@ function skipTyping() {
 }
 
 window.onload = function () {
-  const introText = `\nThe supernatural society was a place of fear and danger.\nIt was filled with powerful and malevolent demons, dark magic,\nand a rigid hierarchy where the demons held absolute power over the grim reapers.\nThe grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.\nThis violated the natural order of life and caused many reapers to seek freedom.\n\nOne reaper dared to resist... and their story begins now.`;
+  const introText = `\nThe supernatural society was a place of fear and danger...\nOne reaper dared to resist... and their story begins now.`;
   typeText(introText);
 };
 
@@ -110,13 +111,9 @@ function startGame() {
 }
 
 function loadScene() {
-  console.log("Attempting to load scene. Current index:", window.curSceneIndex);
-
   if (typeof window.curSceneIndex !== "number" || window.curSceneIndex < 0 || window.curSceneIndex >= scenes.length) {
-    console.error("Invalid scene index! Resetting to 0.");
     window.curSceneIndex = 0;
   }
-
   const scene = scenes[window.curSceneIndex];
   if (!scene) return;
 
@@ -126,23 +123,18 @@ function loadScene() {
 
   try {
     bgMusic.src = scene.music;
-    bgMusic.play().catch(err => console.warn("Audio play failed:", err));
-  } catch (e) {
-    console.warn("Audio load/play error:", e);
-  }
+    bgMusic.play().catch(() => {});
+  } catch (e) {}
 
   enemy = { ...scene.enemy };
   updateStats();
-
-  nextSceneBtn.style.display = "inline-block";
+  nextSceneBtn.style.display = "none"; // hide until boss is defeated
 
   typeText(scene.description + "\n\n", 30, showCombatOptions);
 }
 
 function nextScene() {
   if (window.curSceneIndex < scenes.length - 1) {
-    window.curSceneIndex++;
-    console.log("Manual scene change. New index:", window.curSceneIndex);
     loadScene();
   } else {
     bossImg.style.display = "none";
@@ -223,15 +215,6 @@ function checkPlayerDeath() {
 function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
-
-    if (window.curSceneIndex < scenes.length - 1) {
-      window.curSceneIndex++;
-      console.log("Scene index incremented to:", window.curSceneIndex);
-      loadScene();
-    } else {
-      bossImg.style.display = "none";
-      nextSceneBtn.style.display = "none";
-      typeText(`Congratulations, ${player.name}! You have defeated the Demon CEO, freed the reapers, and restored balance to the supernatural world!`);
-    }
+    nextSceneBtn.style.display = "inline-block";
   });
 }
