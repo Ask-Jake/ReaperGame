@@ -12,16 +12,16 @@ const bgMusic = document.getElementById("bg-music");
 const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
-// ✅ Ensure scene index is consistent
-if (typeof window.curSceneIndex === "undefined") {
+// ✅ Ensure scene index always exists and is valid
+if (typeof window.curSceneIndex === "undefined" || typeof window.curSceneIndex !== "number" || window.curSceneIndex < 0) {
   window.curSceneIndex = 0;
 }
+console.log("GAME.JS LOADED! curSceneIndex =", window.curSceneIndex);
 
 let player = { name: "", health: 100, armor: 0, strength: 10 };
 let enemy = null;
 let currentTypeId = 0;
 
-// ✅ Scene definitions
 const scenes = [
   {
     name: "Temple",
@@ -58,7 +58,6 @@ The air crackles with nether energy, and screams reverberate through the torture
   }
 ];
 
-// ✅ Typewriter effect
 function typeText(text, delay = 30, callback) {
   currentTypeId++;
   const myId = currentTypeId;
@@ -95,8 +94,7 @@ function skipTyping() {
   }
 }
 
-// ✅ Intro text
-globalThis.onload = function () {
+window.onload = function () {
   const introText = `
 The supernatural society was a place of fear and danger.
 It was filled with powerful and malevolent demons, dark magic,
@@ -104,12 +102,10 @@ and a rigid hierarchy where the demons held absolute power over the grim reapers
 The grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.
 This violated the natural order of life and caused many reapers to seek freedom.
 
-One reaper dared to resist... and their story begins now.
-`;
+One reaper dared to resist... and their story begins now.`;
   typeText(introText);
 };
 
-// ✅ Start Game
 function startGame() {
   currentTypeId++;
   story.textContent = "";
@@ -125,11 +121,22 @@ function startGame() {
   loadScene();
 }
 
-// ✅ Load Scene
 function loadScene() {
-  console.log("Loading scene index:", window.curSceneIndex);
+  console.log("Attempting to load scene. Current index:", window.curSceneIndex);
+  console.log("Total scenes:", scenes.length);
+
+  if (typeof window.curSceneIndex !== "number" || window.curSceneIndex < 0 || window.curSceneIndex >= scenes.length) {
+    console.error("Invalid scene index! Resetting to 0.");
+    window.curSceneIndex = 0;
+  }
 
   const scene = scenes[window.curSceneIndex];
+  if (!scene) {
+    console.error("Scene is undefined even after reset!");
+    return;
+  }
+
+  console.log("Loading scene:", scene.name);
 
   sceneImg.src = scene.img + "?v=" + Date.now();
   bossImg.src = scene.enemy.img + "?v=" + Date.now();
@@ -144,11 +151,9 @@ function loadScene() {
 
   enemy = { ...scene.enemy };
   updateStats();
-
   typeText(scene.description + "\n\n", 30, showCombatOptions);
 }
 
-// ✅ Update Player/Enemy Stats
 function updateStats() {
   healthEl.textContent = player.health;
   armorEl.textContent = player.armor;
@@ -156,7 +161,6 @@ function updateStats() {
   enemyHealthEl.textContent = enemy.health;
 }
 
-// ✅ Show Combat Options
 function showCombatOptions() {
   options.innerHTML = `
     <button onclick="doAction('armor')">Pick up Armor</button>
@@ -165,7 +169,6 @@ function showCombatOptions() {
   `;
 }
 
-// ✅ Player Actions
 function doAction(act) {
   if (enemy.health <= 0) return;
 
@@ -194,7 +197,6 @@ function doAction(act) {
   enemyTurn(text);
 }
 
-// ✅ Enemy Turn
 function enemyTurn(prevText) {
   if (enemy.health <= 0) return;
 
@@ -214,7 +216,6 @@ function enemyTurn(prevText) {
   checkPlayerDeath();
 }
 
-// ✅ Check Player Death
 function checkPlayerDeath() {
   if (player.health <= 0) {
     typeText(`You have been defeated by ${enemy.name}. Game Over.`);
@@ -222,7 +223,6 @@ function checkPlayerDeath() {
   }
 }
 
-// ✅ Handle End of Battle
 function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
@@ -233,9 +233,7 @@ function endBattle(prevText) {
       loadScene();
     } else {
       bossImg.style.display = "none";
-      typeText(
-        `Congratulations, ${player.name}! You have defeated the Demon CEO, freed the reapers, and restored balance to the supernatural world!`
-      );
+      typeText(`Congratulations, ${player.name}! You have defeated the Demon CEO, freed the reapers, and restored balance to the supernatural world!`);
     }
   });
 }
