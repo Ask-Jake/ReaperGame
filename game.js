@@ -12,16 +12,16 @@ const bgMusic = document.getElementById("bg-music");
 const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
-// Create Continue Adventure button dynamically at the bottom of the page
+// Create Continue Adventure button dynamically inside options container
 const nextSceneBtn = document.createElement("button");
 nextSceneBtn.textContent = "Continue Adventure";
 nextSceneBtn.style.display = "none";
 nextSceneBtn.id = "continue-btn";
-nextSceneBtn.style.marginTop = "20px";
+nextSceneBtn.style.marginTop = "10px";
 nextSceneBtn.style.padding = "10px 20px";
 nextSceneBtn.style.fontSize = "1.2em";
 nextSceneBtn.onclick = () => nextScene();
-document.body.appendChild(nextSceneBtn);
+options.appendChild(nextSceneBtn);
 
 // Ensure scene index exists and is valid
 if (typeof window.curSceneIndex !== "number" || window.curSceneIndex < 0) {
@@ -90,7 +90,7 @@ function skipTyping() {
 }
 
 window.onload = function () {
-  const introText = `\nThe supernatural society was a place of fear and danger.\nIt was filled with powerful and malevolent demons, dark magic,\nand a rigid hierarchy where the demons held absolute power over the grim reapers.\nThe grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.\nThis violated the natural order of life and caused many reapers to seek freedom.\n\nOne reaper dared to resist... and their story begins now.`;
+  const introText = `\n ( changed ) The supernatural society was a place of fear and danger.\nIt was filled with powerful and malevolent demons, dark magic,\nand a rigid hierarchy where the demons held absolute power over the grim reapers.\nThe grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.\nThis violated the natural order of life and caused many reapers to seek freedom.\n\nOne reaper dared to resist... and their story begins now.`;
   typeText(introText);
 };
 
