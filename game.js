@@ -30,7 +30,6 @@ let enemy = null;
 let currentTypeId = 0;
 
 const scenes = [
-  // same scenes as before
   {
     name: "Temple",
     img: "temple.png",
@@ -128,13 +127,14 @@ function loadScene() {
 
   enemy = { ...scene.enemy };
   updateStats();
-  nextSceneBtn.style.display = "none"; // hide until boss is defeated
+  nextSceneBtn.style.display = "none"; // Ensure hidden until boss is defeated
 
   typeText(scene.description + "\n\n", 30, showCombatOptions);
 }
 
 function nextScene() {
   if (window.curSceneIndex < scenes.length - 1) {
+    window.curSceneIndex++;
     loadScene();
   } else {
     bossImg.style.display = "none";
