@@ -12,14 +12,16 @@ const bgMusic = document.getElementById("bg-music");
 const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
-// ✅ Ensure scene index always exists globally
-window.SceneIndex = window.SceneIndex ?? 0;
-console.log("GAME.JS LOADED! curSceneIndex =", window.SceneIndex,);
+// ✅ Ensure scene index is consistent
+if (typeof window.curSceneIndex === "undefined") {
+  window.curSceneIndex = 0;
+}
 
 let player = { name: "", health: 100, armor: 0, strength: 10 };
 let enemy = null;
 let currentTypeId = 0;
 
+// ✅ Scene definitions
 const scenes = [
   {
     name: "Temple",
@@ -56,6 +58,7 @@ The air crackles with nether energy, and screams reverberate through the torture
   }
 ];
 
+// ✅ Typewriter effect
 function typeText(text, delay = 30, callback) {
   currentTypeId++;
   const myId = currentTypeId;
@@ -92,7 +95,8 @@ function skipTyping() {
   }
 }
 
-window.onload = function () {
+// ✅ Intro text
+globalThis.onload = function () {
   const introText = `
 The supernatural society was a place of fear and danger.
 It was filled with powerful and malevolent demons, dark magic,
@@ -105,9 +109,8 @@ One reaper dared to resist... and their story begins now.
   typeText(introText);
 };
 
+// ✅ Start Game
 function startGame() {
-
-  console.log("GAME.JS LOADED! sceneIndex =", scenes.length );
   currentTypeId++;
   story.textContent = "";
   player.name = input.value.trim() || "Reaper";
@@ -122,10 +125,11 @@ function startGame() {
   loadScene();
 }
 
+// ✅ Load Scene
 function loadScene() {
-  console.log("Loading scene index:", window.sceneIndex);
+  console.log("Loading scene index:", window.curSceneIndex);
 
-  const scene = scenes[window.scenelength];
+  const scene = scenes[window.curSceneIndex];
 
   sceneImg.src = scene.img + "?v=" + Date.now();
   bossImg.src = scene.enemy.img + "?v=" + Date.now();
@@ -144,6 +148,7 @@ function loadScene() {
   typeText(scene.description + "\n\n", 30, showCombatOptions);
 }
 
+// ✅ Update Player/Enemy Stats
 function updateStats() {
   healthEl.textContent = player.health;
   armorEl.textContent = player.armor;
@@ -151,6 +156,7 @@ function updateStats() {
   enemyHealthEl.textContent = enemy.health;
 }
 
+// ✅ Show Combat Options
 function showCombatOptions() {
   options.innerHTML = `
     <button onclick="doAction('armor')">Pick up Armor</button>
@@ -159,6 +165,7 @@ function showCombatOptions() {
   `;
 }
 
+// ✅ Player Actions
 function doAction(act) {
   if (enemy.health <= 0) return;
 
@@ -173,14 +180,12 @@ function doAction(act) {
     text = `${player.name} uses a potion (+10 HP).`;
   } else if (act === "fight") {
     enemy.health = Math.max(0, enemy.health - damage);
-    console.log("Enemy HP after attack:", enemy.health);
     text = `${player.name} hits ${enemy.name} for ${damage} damage.`;
   }
 
   updateStats();
 
   if (enemy.health <= 0) {
-    console.log("Enemy defeated → Calling endBattle()");
     options.innerHTML = "";
     endBattle(text);
     return;
@@ -189,6 +194,7 @@ function doAction(act) {
   enemyTurn(text);
 }
 
+// ✅ Enemy Turn
 function enemyTurn(prevText) {
   if (enemy.health <= 0) return;
 
@@ -208,6 +214,7 @@ function enemyTurn(prevText) {
   checkPlayerDeath();
 }
 
+// ✅ Check Player Death
 function checkPlayerDeath() {
   if (player.health <= 0) {
     typeText(`You have been defeated by ${enemy.name}. Game Over.`);
@@ -215,22 +222,15 @@ function checkPlayerDeath() {
   }
 }
 
+// ✅ Handle End of Battle
 function endBattle(prevText) {
-  console.log("endBattle() called. Current scene index:", window.curSceneIndex);
-
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
 
-    //NOT RUNNING
-    if (window.curSceneIndex < scenes.length) {
-      window.curSceneIndex = Number(window.curSceneIndex) + 1;
+    if (window.curSceneIndex < scenes.length - 1) {
+      window.curSceneIndex++;
       console.log("Scene index incremented to:", window.curSceneIndex);
-
-      setTimeout(() => {
-        console.log("Loading new scene...");
-        loadScene();
-      }, 1000);
-
+      loadScene();
     } else {
       bossImg.style.display = "none";
       typeText(
@@ -239,4 +239,3 @@ function endBattle(prevText) {
     }
   });
 }
-
