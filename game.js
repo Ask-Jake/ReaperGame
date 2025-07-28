@@ -13,8 +13,8 @@ const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
 // ✅ Ensure scene index always exists globally
-window.curSceneIndex = window.curSceneIndex ?? 0;
-console.log("GAME.JS LOADED! curSceneIndex =", window.curSceneIndex,);
+window.SceneIndex = window.SceneIndex ?? 0;
+console.log("GAME.JS LOADED! curSceneIndex =", window.SceneIndex,);
 
 let player = { name: "", health: 100, armor: 0, strength: 10 };
 let enemy = null;
@@ -123,9 +123,9 @@ function startGame() {
 }
 
 function loadScene() {
-  console.log("Loading scene index:", window.curSceneIndex);
+  console.log("Loading scene index:", window.sceneIndex);
 
-  const scene = scenes[window.curSceneIndex];
+  const scene = scenes[window.scenelength];
 
   sceneImg.src = scene.img + "?v=" + Date.now();
   bossImg.src = scene.enemy.img + "?v=" + Date.now();
@@ -221,6 +221,7 @@ function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
 
+    //NOT RUNNING
     if (window.curSceneIndex < scenes.length) {
       window.curSceneIndex = Number(window.curSceneIndex) + 1;
       console.log("Scene index incremented to:", window.curSceneIndex);
