@@ -14,7 +14,7 @@ const skipBtn = document.getElementById("skip-button");
 
 // ✅ Ensure scene index always exists globally
 window.curSceneIndex = window.curSceneIndex ?? 0;
-console.log("GAME.JS LOADED! curSceneIndex =", window.curSceneIndex, scenes.length);
+console.log("GAME.JS LOADED! curSceneIndex =", window.curSceneIndex,);
 
 let player = { name: "", health: 100, armor: 0, strength: 10 };
 let enemy = null;
@@ -106,6 +106,8 @@ One reaper dared to resist... and their story begins now.
 };
 
 function startGame() {
+
+  console.log("GAME.JS LOADED! curSceneIndex =", window.curSceneIndex,);
   currentTypeId++;
   story.textContent = "";
   player.name = input.value.trim() || "Reaper";
