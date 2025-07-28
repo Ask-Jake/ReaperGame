@@ -14,7 +14,7 @@ const skipBtn = document.getElementById("skip-button");
 
 // ✅ Ensure scene index always exists globally
 window.curSceneIndex = window.curSceneIndex ?? 0;
-console.log("GAME.JS LOADED! curSceneIndex =", window.curSceneIndex);
+console.log("GAME.JS LOADED! curSceneIndex =", window.curSceneIndex, scenes.length);
 
 let player = { name: "", health: 100, armor: 0, strength: 10 };
 let enemy = null;
@@ -220,7 +220,6 @@ function endBattle(prevText) {
     options.innerHTML = "";
 
     if (window.curSceneIndex < scenes.length) {
-      console.log(scenes.length);
       window.curSceneIndex = Number(window.curSceneIndex) + 1;
       console.log("Scene index incremented to:", window.curSceneIndex);
 
