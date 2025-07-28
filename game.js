@@ -12,7 +12,7 @@ const bgMusic = document.getElementById("bg-music");
 const introImg = document.getElementById("intro-img");
 const skipBtn = document.getElementById("skip-button");
 
-// Create Continue Adventure button dynamically
+// Create Continue Adventure button dynamically and keep it in DOM
 const nextSceneBtn = document.createElement("button");
 nextSceneBtn.textContent = "Continue Adventure";
 nextSceneBtn.style.display = "none";
@@ -21,7 +21,7 @@ nextSceneBtn.style.marginTop = "10px";
 nextSceneBtn.style.padding = "10px 20px";
 nextSceneBtn.style.fontSize = "1.2em";
 nextSceneBtn.onclick = () => nextScene();
-document.body.appendChild(nextSceneBtn);
+options.appendChild(nextSceneBtn);
 
 // Ensure scene index exists and is valid
 if (typeof window.curSceneIndex !== "number" || window.curSceneIndex < 0) {
@@ -142,34 +142,75 @@ function updateStats() {
 
 function showCombatOptions() {
   options.innerHTML = `
-    <button onclick="doAction('armor')">Pick up Armor</button>
+    <button onclick="doAction('quick')">Quick Attack (Low dmg, High accuracy)</button>
+    <button onclick="doAction('heavy')">Heavy Attack (High dmg, Low accuracy)</button>
+    <button onclick="doAction('special')">Special Attack (Cooldown)</button>
     <button onclick="doAction('potion')">Use Potion</button>
-    <button onclick="doAction('fight')">Fight</button>
+    <button onclick="doAction('armor')">Pick up Armor</button>
   `;
+  options.appendChild(nextSceneBtn);
 }
+
+let specialCooldown = 0;
 
 function doAction(act) {
   if (enemy.health <= 0) return;
   let text = "";
-  const damage = Math.floor(Math.random() * player.strength) + 5;
+  let hitChance = 1;
+  let damage = 0;
+
   if (act === "armor") {
     player.armor += 10;
     text = `${player.name} picks up armor (+10).`;
   } else if (act === "potion") {
     player.health = Math.min(player.health + 10, 100);
     text = `${player.name} uses a potion (+10 HP).`;
-  } else if (act === "fight") {
-    enemy.health = Math.max(0, enemy.health - damage);
-    text = `${player.name} hits ${enemy.name} for ${damage} damage.`;
+  } else if (act === "quick") {
+    hitChance = 0.9;
+    damage = Math.floor(Math.random() * 4) + 3;
+    if (Math.random() <= hitChance) {
+      enemy.health = Math.max(0, enemy.health - damage);
+      text = `${player.name} performs a Quick Attack for ${damage} damage!`;
+    } else {
+      text = `${player.name}'s Quick Attack missed!`;
+    }
+  } else if (act === "heavy") {
+    hitChance = 0.5;
+    damage = Math.floor(Math.random() * 8) + 8;
+    if (Math.random() <= hitChance) {
+      enemy.health = Math.max(0, enemy.health - damage);
+      text = `${player.name} performs a Heavy Attack for ${damage} damage!`;
+    } else {
+      text = `${player.name}'s Heavy Attack missed!`;
+    }
+  } else if (act === "special") {
+    if (specialCooldown > 0) {
+      text = `Special Attack is on cooldown for ${specialCooldown} more turn(s)!`;
+    } else {
+      damage = Math.floor(Math.random() * 10) + 12;
+      enemy.health = Math.max(0, enemy.health - damage);
+      text = `${player.name} unleashes a Special Attack for ${damage} damage!`;
+      specialCooldown = 3;
+    }
   }
+
   updateStats();
+
   if (enemy.health <= 0) {
-    options.innerHTML = "";
+    options.innerHTML = `
+      <button onclick="doAction('quick')">Quick Attack</button>
+      <button onclick="doAction('heavy')">Heavy Attack</button>
+      <button onclick="doAction('special')">Special Attack</button>
+      <button onclick="doAction('potion')">Use Potion</button>
+      <button onclick="doAction('armor')">Pick up Armor</button>`;
     options.appendChild(nextSceneBtn);
     nextSceneBtn.style.display = "inline-block";
     typeText(`${text}\nYou've defeated ${enemy.name}!`);
     return;
   }
+
+  if (specialCooldown > 0) specialCooldown--;
+
   enemyTurn(text);
 }
 
@@ -192,5 +233,6 @@ function checkPlayerDeath() {
   if (player.health <= 0) {
     typeText(`You have been defeated by ${enemy.name}. Game Over.`);
     options.innerHTML = "";
+    nextSceneBtn.style.display = "none";
   }
 }
