@@ -26,7 +26,27 @@ if (typeof window.curSceneIndex !== "number" || window.curSceneIndex < 0) {
   window.curSceneIndex = 0;
 }
 
-let player = { name: "", health: 100, armor: 0, strength: 10 };
+let player = {
+  name: "",
+  health: 100,
+  maxHealth: 100,
+  armor: 0,
+  strength: 10,
+  speed: 5,
+  accuracy: 0.8,
+  level: 1,
+  xp: 0,
+  gold: 0,
+  weapon: { name: "Basic Scythe", bonus: 0, type: "weapon" },
+  armorItem: { name: "Cloth Robe", bonus: 0, type: "armor" },
+  inventory: [
+    { name: "Iron Sword", bonus: 3, type: "weapon" },
+    { name: "Steel Armor", bonus: 5, type: "armor" },
+    { name: "Silver Dagger", bonus: 2, type: "weapon" },
+    { name: "Knight Plate", bonus: 8, type: "armor" }
+  ]
+};
+
 let enemy = null;
 let currentTypeId = 0;
 
@@ -36,21 +56,21 @@ const scenes = [
     img: "temple.png",
     music: "temple.mp3",
     enemy: { name: "Demon Boss", health: 50, strength: 8, img: "Demonboss.png" },
-    description: `SCENE 1 – TEMPLE:\nThe camera pans over a foreboding temple in the depths of Hell.\nThe walls are made of charred obsidian, and glowing red symbols burn into the stone.\nFlames flicker in braziers, casting macabre shadows across broken statues of demonic figures.\nThe air is thick with sulfuric smoke, and the only sounds are distant screams of damned souls echoing through the dark halls.\nA feeling of malevolent power seems to suffuse the very air.`
+    description: `SCENE 1 – TEMPLE:\nThe camera pans over a foreboding temple in the depths of Hell...`
   },
   {
     name: "Forest",
     img: "forest.png",
     music: "forest.mp3",
     enemy: { name: "Demon Supervisor", health: 80, strength: 12, img: "demonSupervisor.png" },
-    description: `SCENE 2 – FOREST:\nThe camera traverses through a twisted forest, the trees resembling gnarled fingers reaching toward the ominous sky.\nThe red glow of the inferno illuminates the branches, casting an eerie aura over the surroundings.\nThe ground is scorched and barren, emitting heat like burning coals.\nMalicious spirits materialize and vanish in flashes of flame, their shrieks echoing in the infernal air.`
+    description: `SCENE 2 – FOREST:\nThe camera traverses through a twisted forest...`
   },
   {
     name: "Metropolis",
     img: "city.png",
     music: "city.mp3",
     enemy: { name: "Demon CEO", health: 150, strength: 20, img: "demonCEO.png" },
-    description: `FINAL SCENE 3 – METROPOLIS:\nA sprawling infernal metropolis stretches endlessly before you, jagged spires stabbing the dark sky.\nFiery rivers cut through streets lined with twisted buildings, each filled with demonic figures whispering and plotting.\nThe air crackles with nether energy, and screams reverberate through the tortured landscape.`
+    description: `FINAL SCENE 3 – METROPOLIS:\nA sprawling infernal metropolis stretches endlessly before you...`
   }
 ];
 
@@ -88,7 +108,7 @@ function skipTyping() {
 }
 
 window.onload = function () {
-  const introText = `\nThe supernatural society was a place of fear and danger.\nIt was filled with powerful and malevolent demons, dark magic,\nand a rigid hierarchy where the demons held absolute power over the grim reapers.\nThe grim reapers were forced to do the bidding of the demons, which included killing humans to reap their souls.\nThis violated the natural order of life and caused many reapers to seek freedom.\n\nOne reaper dared to resist... and their story begins now.`;
+  const introText = `\nThe supernatural society was a place of fear and danger...`;
   typeText(introText);
 };
 
@@ -132,8 +152,8 @@ function nextScene() {
 }
 
 function updateStats() {
-  healthEl.textContent = player.health;
-  armorEl.textContent = player.armor;
+  healthEl.textContent = `${player.health}/${player.maxHealth}`;
+  armorEl.textContent = player.armor + player.armorItem.bonus;
   enemyNameEl.textContent = enemy.name;
   enemyHealthEl.textContent = enemy.health;
 }
@@ -143,8 +163,44 @@ function showCombatOptions() {
     <button onclick="showAttackChoices()">Fight</button>
     <button onclick="doAction('potion')">Use Potion</button>
     <button onclick="doAction('armor')">Pick up Armor</button>
+    <button onclick="openInventory()">Inventory</button>
+    <button onclick="viewStats()">View Stats</button>
   `;
   options.appendChild(nextSceneBtn);
+}
+
+function viewStats() {
+  options.innerHTML = `
+    <h3>${player.name}'s Stats</h3>
+    <p>Level: ${player.level}</p>
+    <p>XP: ${player.xp}</p>
+    <p>Gold: ${player.gold}</p>
+    <p>Health: ${player.health}/${player.maxHealth}</p>
+    <p>Strength: ${player.strength}</p>
+    <p>Speed: ${player.speed}</p>
+    <p>Accuracy: ${player.accuracy}</p>
+    <p>Weapon: ${player.weapon.name} (+${player.weapon.bonus})</p>
+    <p>Armor: ${player.armorItem.name} (+${player.armorItem.bonus})</p>
+    <button onclick="showCombatOptions()">Back</button>
+  `;
+}
+
+function openInventory() {
+  options.innerHTML = "<h3>Inventory</h3>";
+  player.inventory.forEach((item, index) => {
+    options.innerHTML += `<button onclick="equipItem(${index})">Equip ${item.name} (+${item.bonus})</button><br>`;
+  });
+  options.innerHTML += `<button onclick="showCombatOptions()">Back</button>`;
+}
+
+function equipItem(index) {
+  const item = player.inventory[index];
+  if (item.type === "weapon") {
+    player.weapon = item;
+  } else if (item.type === "armor") {
+    player.armorItem = item;
+  }
+  showCombatOptions();
 }
 
 function showAttackChoices() {
@@ -158,34 +214,50 @@ function showAttackChoices() {
 
 let specialCooldown = 0;
 
+function calculateHit(baseChance) {
+  let modifiedChance = baseChance + (player.accuracy - 0.5) * 0.5 + player.speed * 0.01;
+  return Math.random() <= modifiedChance;
+}
+
 function doAction(act) {
   if (enemy.health <= 0) return;
   let text = "";
   let damage = 0;
+  const weaponBonus = player.weapon.bonus;
 
   if (act === "armor") {
     player.armor += 10;
     text = `${player.name} picks up armor (+10).`;
   } else if (act === "potion") {
-    player.health = Math.min(player.health + 10, 100);
-    text = `${player.name} uses a potion (+10 HP).`;
+    player.health = Math.min(player.health + 20, player.maxHealth);
+    text = `${player.name} uses a potion (+20 HP).`;
   } else if (act === "quick") {
-    const hitChance = 0.9;
-    damage = Math.floor(Math.random() * 4) + 3;
-    text = Math.random() <= hitChance ? `${player.name} hits ${enemy.name} with a Quick Attack for ${damage} damage!` : `${player.name}'s Quick Attack missed!`;
-    if (Math.random() <= hitChance) enemy.health = Math.max(0, enemy.health - damage);
+    if (calculateHit(0.9)) {
+      damage = Math.floor(Math.random() * 4) + 3 + player.strength * 0.3 + weaponBonus;
+      enemy.health = Math.max(0, enemy.health - damage);
+      text = `${player.name} lands a Quick Attack with ${player.weapon.name} for ${damage} damage!`;
+    } else {
+      text = `${player.name}'s Quick Attack missed!`;
+    }
   } else if (act === "heavy") {
-    const hitChance = 0.5;
-    damage = Math.floor(Math.random() * 8) + 8;
-    text = Math.random() <= hitChance ? `${player.name} hits ${enemy.name} with a Heavy Attack for ${damage} damage!` : `${player.name}'s Heavy Attack missed!`;
-    if (Math.random() <= hitChance) enemy.health = Math.max(0, enemy.health - damage);
+    if (calculateHit(0.5)) {
+      damage = Math.floor(Math.random() * 8) + 8 + player.strength * 0.5 + weaponBonus;
+      enemy.health = Math.max(0, enemy.health - damage);
+      text = `${player.name} lands a Heavy Attack with ${player.weapon.name} for ${damage} damage!`;
+    } else {
+      text = `${player.name}'s Heavy Attack missed!`;
+    }
   } else if (act === "special") {
     if (specialCooldown > 0) {
       text = `Special Attack is on cooldown for ${specialCooldown} more turn(s)!`;
     } else {
-      damage = Math.floor(Math.random() * 10) + 12;
-      enemy.health = Math.max(0, enemy.health - damage);
-      text = `${player.name} unleashes a Special Attack for ${damage} damage!`;
+      if (calculateHit(0.7)) {
+        damage = Math.floor(Math.random() * 10) + 12 + player.strength * 0.7 + weaponBonus;
+        enemy.health = Math.max(0, enemy.health - damage);
+        text = `${player.name} unleashes a Special Attack with ${player.weapon.name} for ${damage} damage!`;
+      } else {
+        text = `${player.name}'s Special Attack missed!`;
+      }
       specialCooldown = 3;
     }
   }
@@ -193,13 +265,23 @@ function doAction(act) {
   updateStats();
 
   if (enemy.health <= 0) {
-    options.innerHTML = `
-      <button onclick="showAttackChoices()">Fight</button>
-      <button onclick="doAction('potion')">Use Potion</button>
-      <button onclick="doAction('armor')">Pick up Armor</button>`;
+    options.innerHTML = "";
     options.appendChild(nextSceneBtn);
     nextSceneBtn.style.display = "inline-block";
     typeText(`${text}\nYou've defeated ${enemy.name}!`);
+
+    player.xp += 10;
+    player.gold += Math.floor(Math.random() * 10) + 5;
+
+    if (player.xp >= player.level * 20) {
+      player.level++;
+      player.strength += 2;
+      player.maxHealth += 10;
+      player.health = player.maxHealth;
+      player.speed += 1;
+      player.accuracy += 0.02;
+      typeText(`Level Up! ${player.name} is now level ${player.level}! Stats increased.`);
+    }
     return;
   }
 
@@ -211,7 +293,7 @@ function doAction(act) {
 function enemyTurn(prevText) {
   if (enemy.health <= 0) return;
   const dmg = Math.floor(Math.random() * enemy.strength) + 3;
-  const armorAbsorb = Math.min(dmg, player.armor);
+  const armorAbsorb = Math.min(dmg, player.armor + player.armorItem.bonus);
   const healthDamage = dmg - armorAbsorb;
   player.armor -= armorAbsorb;
   player.health -= healthDamage;
