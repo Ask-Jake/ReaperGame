@@ -219,7 +219,7 @@ function endBattle(prevText) {
   typeText(`${prevText}\nYou've defeated ${enemy.name}!`, () => {
     options.innerHTML = "";
 
-    if (window.curSceneIndex < scenes.length - 1) {
+    if (window.curSceneIndex < scenes.length + 1) {
       window.curSceneIndex = Number(window.curSceneIndex) + 1;
       console.log("Scene index incremented to:", window.curSceneIndex);
 
