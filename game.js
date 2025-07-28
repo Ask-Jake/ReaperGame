@@ -220,6 +220,7 @@ function endBattle(prevText) {
     options.innerHTML = "";
 
     if (window.curSceneIndex < scenes.length) {
+      console.log(scenes.length);
       window.curSceneIndex = Number(window.curSceneIndex) + 1;
       console.log("Scene index incremented to:", window.curSceneIndex);
 
